@@ -1,0 +1,40 @@
+grammar TSmm;
+
+/* Syntactic analyser */
+
+program: NUMBER_LITERAL*
+       | COMMENT*
+       | WS*
+       ;
+/* Lexical analyser */
+
+COMMENT: ('//' ~[\r\n]* | '/*' .*? '*/') -> skip;
+
+WS: [ \t\n\r]+ -> skip
+  ;
+
+fragment
+DIGIT: [0-9]
+     ;
+
+INT_LITERAL: '0'
+           | [1-9] DIGIT*
+           ;
+
+CHAR_LITERAL: '\'' . '\''
+            | '\'' '\\'[nt] '\''
+            | '\'' '\\'DIGIT* '\''
+            ;
+fragment
+MANTISSA: INT_LITERAL '.' INT_LITERAL*
+        | INT_LITERAL* '.' INT_LITERAL
+        | INT_LITERAL
+        ;
+
+NUMBER_LITERAL: MANTISSA
+              | MANTISSA 'E-' INT_LITERAL
+              | MANTISSA 'e' '+'? INT_LITERAL
+              ;
+
+ID: [a-zA-Z_][a-zA-Z_0-9]*
+  ;
