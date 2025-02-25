@@ -16,4 +16,6 @@ public class Variable implements Expression {
     public int getColumn() {
         return 0;
     }
+
+
 }
