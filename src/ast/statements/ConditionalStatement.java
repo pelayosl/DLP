@@ -1,23 +1,47 @@
 package ast.statements;
 
-import ast.Expression;
+import ast.locatables.Expression;
 import ast.locatables.Statement;
 
 import java.util.List;
 
-public class ConditionalStatement implements Statement {
+public class ConditionalStatement extends AbstractStatement {
 
-    private Statement ifStatement;
-    private Statement elseStatement;
+    private List<Statement> ifStatement;
+    private List<Statement> elseStatement;
+
+    public ConditionalStatement(int line, int column, List<Statement> ifStatement, List<Statement> elseStatement, Expression comparison) {
+        super(line, column);
+        this.ifStatement = ifStatement;
+        this.elseStatement = elseStatement;
+        this.comparison = comparison;
+
+    }
+
+    public List<Statement> getIfStatement() {
+        return ifStatement;
+    }
+
+    public void setIfStatement(List<Statement> ifStatement) {
+        this.ifStatement = ifStatement;
+    }
+
+    public List<Statement> getElseStatement() {
+        return elseStatement;
+    }
+
+    public void setElseStatement(List<Statement> elseStatement) {
+        this.elseStatement = elseStatement;
+    }
+
+    public Expression getComparison() {
+        return comparison;
+    }
+
+    public void setComparison(Expression comparison) {
+        this.comparison = comparison;
+    }
+
     private Expression comparison;
 
-    @Override
-    public int getLine() {
-        return 0;
-    }
-
-    @Override
-    public int getColumn() {
-        return 0;
-    }
 }

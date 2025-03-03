@@ -1,18 +1,18 @@
 package ast.expressions;
 
-import ast.Expression;
+import ast.locatables.Expression;
 
-public class NumberLiteral implements Expression {
+public class NumberLiteral extends AbstractExpression {
 
-    private double value;
+    private final double value;
 
-    @Override
-    public int getLine() {
-        return 0;
+    public NumberLiteral(int line, int column, double value) {
+        super(line, column);
+        this.value = value;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public double getValue() {
+        return value;
     }
+
 }

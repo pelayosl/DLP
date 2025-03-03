@@ -4,22 +4,21 @@ import ast.Type;
 import ast.locatables.Definition;
 import ast.locatables.Statement;
 
-public class VarDefinition implements Definition, Statement {
+public class VarDefinition extends AbstractDefinition implements Statement {
 
     private Type type;
 
-    @Override
-    public String getName() {
-        return "";
+    public VarDefinition(int line, int column, Type type, String name) {
+        super(line, column, name);
+        this.type = type;
+
     }
 
-    @Override
-    public int getLine() {
-        return 0;
+    public Type getType() {
+        return type;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public void setType(Type type) {
+        this.type = type;
     }
 }

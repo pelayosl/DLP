@@ -1,19 +1,22 @@
 package ast.statements;
 
-import ast.Expression;
+import ast.locatables.Expression;
 import ast.locatables.Statement;
 
-public class WriteStatement implements Statement {
+public class WriteStatement extends AbstractStatement {
 
     private Expression expression;
 
-    @Override
-    public int getLine() {
-        return 0;
+    public WriteStatement(int line, int column, Expression expression) {
+        super(line, column);
+        this.expression = expression;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public void setExpression(Expression expression) {
+        this.expression = expression;
     }
 }

@@ -1,22 +1,34 @@
 package ast.statements;
 
-import ast.Expression;
+import ast.locatables.Expression;
 import ast.locatables.Statement;
 
 import java.util.List;
 
-public class WhileStatement implements Statement {
+public class WhileStatement extends AbstractStatement {
 
     private Expression condition;
     private List<Statement> statementList;
 
-    @Override
-    public int getLine() {
-        return 0;
+    public WhileStatement(int line, int column, Expression condition, List<Statement> statementList) {
+        super(line, column);
+        this.condition = condition;
+        this.statementList = statementList;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public Expression getCondition() {
+        return condition;
+    }
+
+    public void setCondition(Expression condition) {
+        this.condition = condition;
+    }
+
+    public List<Statement> getStatementList() {
+        return statementList;
+    }
+
+    public void setStatementList(List<Statement> statementList) {
+        this.statementList = statementList;
     }
 }

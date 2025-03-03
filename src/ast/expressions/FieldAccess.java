@@ -1,19 +1,31 @@
 package ast.expressions;
 
-import ast.Expression;
+import ast.locatables.Expression;
 
-public class FieldAccess implements Expression {
+public class FieldAccess extends AbstractExpression {
 
     private Expression expression;
     private String field;
 
-    @Override
-    public int getLine() {
-        return 0;
+    public FieldAccess(int line, int column, Expression expression, String field) {
+        super(line, column);
+        this.expression = expression;
+        this.field = field;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public void setExpression(Expression expression) {
+        this.expression = expression;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
     }
 }

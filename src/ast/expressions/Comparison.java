@@ -1,19 +1,40 @@
 package ast.expressions;
 
-import ast.Expression;
+import ast.locatables.Expression;
 
-public class Comparison implements Expression {
+public class Comparison extends AbstractExpression {
 
     private Expression left, right;
     private String operator;
 
-    @Override
-    public int getLine() {
-        return 0;
+    public Comparison(int line, int column, String operator, Expression left, Expression right) {
+        super(line, column);
+        this.operator = operator;
+        this.left = left;
+        this.right = right;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public Expression getLeft() {
+        return left;
+    }
+
+    public void setLeft(Expression left) {
+        this.left = left;
+    }
+
+    public Expression getRight() {
+        return right;
+    }
+
+    public void setRight(Expression right) {
+        this.right = right;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
     }
 }

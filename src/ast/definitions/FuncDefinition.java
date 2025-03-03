@@ -6,23 +6,33 @@ import ast.locatables.Statement;
 
 import java.util.List;
 
-public class FuncDefinition implements Definition {
+public class FuncDefinition extends AbstractDefinition {
 
     private List<Statement> statementList;
-    private Type returnType;
+    private List<VarDefinition> variablesList;
+    private Type functionType;
 
-    @Override
-    public String getName() {
-        return "";
+    public FuncDefinition(int line, int column, List<Definition> variablesList,
+                          List<Statement> statementList, Type functionType, String name) {
+        super(line, column, name);
+        this.statementList = statementList;
+        this.functionType = functionType;
     }
 
-    @Override
-    public int getLine() {
-        return 0;
+    public List<Statement> getStatementList() {
+        return statementList;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public void setStatementList(List<Statement> statementList) {
+        this.statementList = statementList;
     }
+
+    public Type getFunctionType() {
+        return functionType;
+    }
+
+    public void setFunctionType(Type returnType) {
+        this.functionType = returnType;
+    }
+
 }

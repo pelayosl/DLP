@@ -6,6 +6,14 @@ import java.util.List;
 
 public class Program implements ASTNode{
 
-    private List<Definition> definitionList;
+    private final List<Definition> definitions;
     private Type type;
+
+    public Program(List<Definition> definitions) {
+        this.definitions = definitions;
+    }
+
+    public List<Definition> getDefinitions() {
+        return definitions;
+    }
 }

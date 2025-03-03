@@ -1,20 +1,34 @@
 package ast.statements;
 
-import ast.Expression;
+import ast.locatables.Expression;
 import ast.locatables.Statement;
 
 import java.util.List;
 
-public class Assignment implements Statement {
-    private List<Expression> expressionList;
+public class Assignment extends AbstractStatement {
+    private Expression expression1;
+    private Expression expression2;
 
-    @Override
-    public int getLine() {
-        return 0;
+    public Assignment(int line, int column, Expression expression1, Expression expression2) {
+        super(line, column);
+        this.expression1 = expression1;
+        this.expression2 = expression2;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+
+    public Expression getExpression1() {
+        return expression1;
+    }
+
+    public void setExpression1(Expression expression1) {
+        this.expression1 = expression1;
+    }
+
+    public Expression getExpression2() {
+        return expression2;
+    }
+
+    public void setExpression2(Expression expression2) {
+        this.expression2 = expression2;
     }
 }

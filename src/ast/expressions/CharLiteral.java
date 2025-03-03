@@ -1,15 +1,17 @@
 package ast.expressions;
 
-import ast.Expression;
+import ast.locatables.Expression;
 
-public class CharLiteral implements Expression {
-    @Override
-    public int getLine() {
-        return 0;
+public class CharLiteral extends AbstractExpression {
+
+    private final char value;
+
+    public CharLiteral(int line, int column, char value) {
+        super(line, column);
+        this.value = value;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+    public char getValue() {
+        return value;
     }
 }

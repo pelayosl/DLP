@@ -3,13 +3,33 @@ package ast.types;
 import ast.Type;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
+import ast.locatables.Definition;
 
 import java.util.List;
 
 public class FunctionType implements Type {
 
     private Type returnType;
-    private FuncDefinition func;
-    private List<VarDefinition> varDefinitionList;
+    private List<Definition> varDefinitionList;
 
+    public FunctionType(Type returnType, List<Definition> varDefinitionList) {
+        this.returnType = returnType;
+        this.varDefinitionList = varDefinitionList;
+    }
+
+    public Type getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Type returnType) {
+        this.returnType = returnType;
+    }
+
+    public List<Definition> getVarDefinitionList() {
+        return varDefinitionList;
+    }
+
+    public void setVarDefinitionList(List<Definition> varDefinitionList) {
+        this.varDefinitionList = varDefinitionList;
+    }
 }

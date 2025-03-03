@@ -1,18 +1,32 @@
 package ast.expressions;
 
-import ast.Expression;
+import ast.locatables.Expression;
 
-public class ArrayAccess implements Expression {
+public class ArrayAccess extends AbstractExpression {
 
-    private Expression expression;
+    private Expression array;
+    private Expression index;
 
-    @Override
-    public int getLine() {
-        return 0;
+    public ArrayAccess(int line, int column, Expression array, Expression index) {
+        super(line, column);
+        this.array = array;
+        this.index = index;
     }
 
-    @Override
-    public int getColumn() {
-        return 0;
+
+    public Expression getArray() {
+        return array;
+    }
+
+    public void setArray(Expression array) {
+        this.array = array;
+    }
+
+    public Expression getIndex() {
+        return index;
+    }
+
+    public void setIndex(Expression index) {
+        this.index = index;
     }
 }
