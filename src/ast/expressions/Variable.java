@@ -4,7 +4,6 @@ import ast.locatables.Expression;
 
 public class Variable extends AbstractExpression {
 
-    private Expression expression; // ???
     private String name;
 
     public Variable(int line, int column, String name) {

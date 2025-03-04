@@ -3,6 +3,7 @@ package ast.statements;
 import ast.locatables.Expression;
 import ast.locatables.Statement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConditionalStatement extends AbstractStatement {
@@ -14,6 +15,14 @@ public class ConditionalStatement extends AbstractStatement {
         super(line, column);
         this.ifStatement = ifStatement;
         this.elseStatement = elseStatement;
+        this.comparison = comparison;
+
+    }
+
+    public ConditionalStatement(int line, int column, List<Statement> ifStatement, Expression comparison) {
+        super(line, column);
+        this.ifStatement = ifStatement;
+        this.elseStatement = new ArrayList<Statement>();
         this.comparison = comparison;
 
     }

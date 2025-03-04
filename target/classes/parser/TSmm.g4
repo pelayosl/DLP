@@ -14,13 +14,15 @@ import java.util.*;
 /* Syntactic analyser (LAB 4) / Embedded actions (LAB 5) */
 
 program returns [Program ast] locals [List<Definition> definitions = new ArrayList<>()]:
-       (definition+ {$definitions.addAll($definition.ast);})* EOF { $ast = new Program($definitions);}
+       (definition {$definitions.addAll($definition.ast);})*
+       main_definition{$definitions.add($main_definition.ast);}
+       EOF { $ast = new Program($definitions);}
        ;
-// un array access no es un ID porque puedes tener array[][]
+
 
 definition returns [List<Definition> ast = new ArrayList<>()]:
-            vars=variable_definition+ {$ast.addAll($vars.ast);}
-          | funcs=function_definition+ {$ast.add($funcs.ast);}
+            (vars=variable_definition{$ast.addAll($vars.ast);})+
+          | (funcs=function_definition{$ast.add($funcs.ast);})+
           ;
 
 
@@ -57,7 +59,7 @@ function_definition returns [Definition ast] locals [Type returnType,
                                                     List<Definition> vars = new ArrayList<>(),
                                                     List<Statement> stmts = new ArrayList<>(),
                                                     List<Definition> params = new ArrayList<>()]:
-                     'function' ID '(' (function_parameters {$params.addAll($function_parameters.ast);})? ')' ':' (t=built_in_type{$returnType=$t.ast;}|'void'{$returnType=new VoidType();})
+                     'function' ID '(' (function_parameters {$params.addAll($function_parameters.ast);})? ')' ':' (t=built_in_type{$returnType=$t.ast;}|'void'{$returnType=VoidType.getInstance();})
                     '{' (variable_definition{$vars.addAll($variable_definition.ast);})* (statement{$stmts.addAll($statement.ast);})* '}' {
 
                         $ast = new FuncDefinition(
@@ -71,6 +73,29 @@ function_definition returns [Definition ast] locals [Type returnType,
                             ),
                             $ID.text
                         );
+
+                    }
+                    ;
+
+main_definition returns [Definition ast] locals [Type returnType,
+                                                    List<Definition> vars = new ArrayList<>(),
+                                                    List<Statement> stmts = new ArrayList<>(),
+                                                    List<Definition> params = new ArrayList<>()]:
+                     'function' id='main' '(' (function_parameters {$params.addAll($function_parameters.ast);})? ')' ':' (t=built_in_type{$returnType=$t.ast;}|'void'{$returnType=VoidType.getInstance();})
+                    '{' (variable_definition{$vars.addAll($variable_definition.ast);})* (statement{$stmts.addAll($statement.ast);})* '}' {
+
+                        $ast = new FuncDefinition(
+                            $id.getLine(),
+                            $id.getCharPositionInLine()+1,
+                            $vars,
+                            $stmts,
+                            new FunctionType(
+                                $returnType,
+                                $params
+                            ),
+                            $id.text
+                        );
+
                     }
                     ;
 
@@ -159,7 +184,18 @@ statement returns [List<Statement> ast = new ArrayList<>()]:
                        )
                        );
        }
+       | 'if' '(' expression ')' b1=block {
+
+                             $ast.add(new ConditionalStatement(
+                                   $expression.ast.getLine(),
+                                   $expression.ast.getColumn(),
+                                   $b1.ast,
+                                   $expression.ast
+                             )
+                             );
+              }
        | 'if' '(' expression ')' b1=block ('else' b2=block)? {
+
                       $ast.add(new ConditionalStatement(
                             $expression.ast.getLine(),
                             $expression.ast.getColumn(),
@@ -182,7 +218,7 @@ statement returns [List<Statement> ast = new ArrayList<>()]:
 
 block returns [List<Statement> ast = new ArrayList<>()]:
         s1=statement { $ast.addAll($s1.ast); }
-       | '{' s2=statement* { $ast.addAll($s2.ast); } '}'
+       | '{' (s2=statement{ $ast.addAll($s2.ast); })* '}'
        ;
 /* We can use $a.ast.getColumn() or $a.start.getCharPositionInLine() + 1 for non-terminals */
 expression returns [Expression ast]:
@@ -228,7 +264,7 @@ expression returns [Expression ast]:
                           $expression.ast
                           );
                       }
-       | ex1=expression ('*'|'/'|'%') ex2=expression {
+       | ex1=expression op=('*'|'/'|'%') ex2=expression {
                       $ast = new Arithmetic(
                           $ex1.ast.getLine(),
                           $ex2.ast.getColumn(),
@@ -246,7 +282,7 @@ expression returns [Expression ast]:
                           $ex2.ast
                           );
                       }
-       | ex1=expression ('>'|'>='|'<'|'<='|'!='|'==') ex2=expression {
+       | ex1=expression op=('>'|'>='|'<'|'<='|'!='|'==') ex2=expression {
                       $ast = new Comparison(
                           $ex1.ast.getLine(),
                           $ex2.ast.getColumn(),
@@ -255,7 +291,7 @@ expression returns [Expression ast]:
                           $ex2.ast
                           );
                       }
-       | ex1=expression ('&&'|'||') ex2=expression {
+       | ex1=expression op=('&&'|'||') ex2=expression {
                        $ast = new Logic(
                            $ex1.ast.getLine(),
                            $ex2.ast.getColumn(),
@@ -290,11 +326,22 @@ type returns [Type ast] locals [List<RecordField> recordFields = new ArrayList<>
                       LexerHelper.lexemeToInt($INT_LITERAL.text)
                       );
                       }
-    |  '[' ('let' ID ':' type ';' { $recordFields.add( new RecordField( $ID.getLine(),
+    |  '[' ('let' ID variableList ':' type ';' { $recordFields.add( new RecordField( $ID.getLine(),
                                     $ID.getCharPositionInLine()+1,
                                     $type.ast,
                                     $ID.text
-                                    ) ); } )+ ']' {
+                                    ) );
+                                    for(Token id : $variableList.ast) {
+                                                           $recordFields.add(
+                                                               new RecordField(
+                                                                   id.getLine(),
+                                                                   id.getCharPositionInLine()+1,
+                                                                   $type.ast,
+                                                                   id.getText()
+                                                               )
+                                                           );
+                                                       }
+                                    } )+ ']' {
                       $ast = new RecordType(
                           $recordFields
                       );

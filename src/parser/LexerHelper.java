@@ -24,7 +24,6 @@ public class LexerHelper {
 
 	// It needs to transform '\97' to 'a', for example
 	public static char lexemeToChar(String str) {
-		System.out.println("Lexeme " + str);
 		str = str.substring(1, str.length() - 1);
 
 		if (str.equals("\\n"))

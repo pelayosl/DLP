@@ -4,19 +4,19 @@ import ast.Type;
 import ast.locatables.Definition;
 import ast.locatables.Statement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FuncDefinition extends AbstractDefinition {
 
     private List<Statement> statementList;
-    private List<VarDefinition> variablesList;
-    private Type functionType;
+    private List<Definition> variablesList;
 
     public FuncDefinition(int line, int column, List<Definition> variablesList,
                           List<Statement> statementList, Type functionType, String name) {
-        super(line, column, name);
+        super(line, column, name, functionType);
         this.statementList = statementList;
-        this.functionType = functionType;
+        this.variablesList = variablesList;
     }
 
     public List<Statement> getStatementList() {
@@ -27,12 +27,11 @@ public class FuncDefinition extends AbstractDefinition {
         this.statementList = statementList;
     }
 
-    public Type getFunctionType() {
-        return functionType;
+    public List<Definition> getVariablesList() {
+        return variablesList;
     }
 
-    public void setFunctionType(Type returnType) {
-        this.functionType = returnType;
+    public void setVariablesList(List<Definition> variablesList) {
+        this.variablesList = variablesList;
     }
-
 }
