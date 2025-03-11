@@ -1,5 +1,6 @@
 package ast.statements;
 
+import ast.ErrorHandler;
 import ast.locatables.*;
 
 public class AbstractStatement extends AbstractLocatable implements Statement {

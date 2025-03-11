@@ -1607,7 +1607,6 @@ public class TSmmParser extends Parser {
 						setState(320);
 						((ExpressionContext)_localctx).ID = match(ID);
 
-						                 System.out.println((((ExpressionContext)_localctx).ID!=null?((ExpressionContext)_localctx).ID.getText():null));
 						                                ((ExpressionContext)_localctx).ast =  new FieldAccess(
 						                                    ((ExpressionContext)_localctx).e1.ast.getLine(),
 						                                    ((ExpressionContext)_localctx).e1.ast.getColumn(),

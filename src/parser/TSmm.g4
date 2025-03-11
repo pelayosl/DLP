@@ -234,7 +234,6 @@ expression returns [Expression ast]:
                           );
                       }
        | e1=expression '.' ID {
-       System.out.println($ID.text);
                       $ast = new FieldAccess(
                           $e1.ast.getLine(),
                           $e1.ast.getColumn(),
