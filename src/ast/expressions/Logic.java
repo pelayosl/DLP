@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.Visitor;
 import ast.locatables.Expression;
 
 public class Logic extends AbstractExpression {
@@ -38,6 +39,9 @@ public class Logic extends AbstractExpression {
         this.operator = operator;
     }
 
-
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
+    }
 
 }

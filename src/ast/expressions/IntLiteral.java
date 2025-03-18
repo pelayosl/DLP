@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import ast.Visitor;
+
 public class IntLiteral extends AbstractExpression {
 
     private final int value;
@@ -11,5 +13,10 @@ public class IntLiteral extends AbstractExpression {
 
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
     }
 }

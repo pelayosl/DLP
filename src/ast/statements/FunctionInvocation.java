@@ -1,5 +1,6 @@
 package ast.statements;
 
+import ast.Visitor;
 import ast.expressions.AbstractExpression;
 import ast.locatables.Expression;
 import ast.expressions.Variable;
@@ -34,6 +35,18 @@ public class FunctionInvocation extends AbstractStatement implements Expression 
         this.variable = variable;
     }
 
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
+    }
 
+    @Override
+    public boolean getLvalue() {
+        return false;
+    }
 
+    @Override
+    public void setLvalue(boolean lvalue) {
+
+    }
 }

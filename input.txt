@@ -4,12 +4,12 @@ function f(e:int): number {
 
 // Main program
 function main(): void {
-  i,a,j:int;
-  v:[10]number;
+  let i,a,j:int;
+  let v:[10]number;
   
   a = 0;
   i = 0;
   j = -i*a-2;  
-  v[(v[j] as int)] = (a as double);
+  v[(v[j] as int)] = (a as number);
   log 'f', '(', 'i', ')', '=' ,f(i);
 }

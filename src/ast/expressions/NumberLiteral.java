@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.Visitor;
 import ast.locatables.Expression;
 
 public class NumberLiteral extends AbstractExpression {
@@ -15,4 +16,8 @@ public class NumberLiteral extends AbstractExpression {
         return value;
     }
 
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
+    }
 }

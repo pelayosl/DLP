@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.Visitor;
 import ast.locatables.Expression;
 
 public class UnaryNot extends AbstractExpression {
@@ -18,5 +19,10 @@ public class UnaryNot extends AbstractExpression {
 
     public void setExpression(Expression expression) {
         this.expression = expression;
+    }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
     }
 }

@@ -15,4 +15,9 @@ public class Program implements ASTNode{
     public List<Definition> getDefinitions() {
         return definitions;
     }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
+    }
 }

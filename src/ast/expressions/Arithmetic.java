@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.Visitor;
 import ast.locatables.Expression;
 
 public class Arithmetic extends AbstractExpression {
@@ -27,4 +28,8 @@ public class Arithmetic extends AbstractExpression {
         return right;
     }
 
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
+    }
 }

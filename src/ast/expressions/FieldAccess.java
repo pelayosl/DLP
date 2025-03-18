@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.Visitor;
 import ast.locatables.Expression;
 
 public class FieldAccess extends AbstractExpression {
@@ -27,5 +28,10 @@ public class FieldAccess extends AbstractExpression {
 
     public void setField(String field) {
         this.field = field;
+    }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
     }
 }

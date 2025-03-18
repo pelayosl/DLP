@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.Visitor;
 import ast.locatables.Expression;
 
 public class CharLiteral extends AbstractExpression {
@@ -13,5 +14,10 @@ public class CharLiteral extends AbstractExpression {
 
     public char getValue() {
         return value;
+    }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
     }
 }

@@ -2,6 +2,7 @@ package ast.types;
 
 import ast.ErrorHandler;
 import ast.Type;
+import ast.Visitor;
 import ast.definitions.VarDefinition;
 
 import java.util.*;
@@ -38,5 +39,10 @@ public class RecordType implements Type {
 
     public void setRecordFieldList(List<RecordField> recordFieldList) {
         this.recordFieldList = recordFieldList;
+    }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
     }
 }

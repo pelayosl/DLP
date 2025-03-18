@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.Visitor;
 import ast.locatables.Expression;
 
 public class ArrayAccess extends AbstractExpression {
@@ -28,5 +29,10 @@ public class ArrayAccess extends AbstractExpression {
 
     public void setIndex(Expression index) {
         this.index = index;
+    }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
     }
 }

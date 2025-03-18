@@ -6,8 +6,8 @@ import ast.locatables.Definition;
 
 public abstract class AbstractDefinition extends AbstractLocatable implements Definition {
 
-    private String name;
-    private Type type;
+    private final String name;
+    private final Type type;
 
     public AbstractDefinition(int line, int column, String name, Type type) {
         super(line, column);

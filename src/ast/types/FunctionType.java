@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.Type;
+import ast.Visitor;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.locatables.Definition;
@@ -31,5 +32,10 @@ public class FunctionType implements Type {
 
     public void setVarDefinitionList(List<Definition> varDefinitionList) {
         this.varDefinitionList = varDefinitionList;
+    }
+
+    @Override
+    public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
+        return v.visit(this, param);
     }
 }

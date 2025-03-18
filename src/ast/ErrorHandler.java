@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ErrorHandler {
     private static final ErrorHandler INSTANCE = new ErrorHandler();
-    private List<ErrorType> errorTypeList = new ArrayList<ErrorType>();
+    private final List<ErrorType> errorTypeList = new ArrayList<ErrorType>();
 
     private ErrorHandler() {}
 
