@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.ErrorHandler;
 import ast.Locatable;
 import ast.Type;
 import ast.Visitor;
@@ -12,6 +13,7 @@ public class ErrorType implements Type {
     public ErrorType(String message, Locatable location) {
         this.message = message;
         this.location = location;
+        ErrorHandler.getInstance().addError(this);
     }
 
     public String toString() {

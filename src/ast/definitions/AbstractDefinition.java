@@ -5,7 +5,7 @@ import ast.locatables.AbstractLocatable;
 import ast.locatables.Definition;
 
 public abstract class AbstractDefinition extends AbstractLocatable implements Definition {
-
+    private int scope;
     private final String name;
     private final Type type;
 
@@ -23,5 +23,15 @@ public abstract class AbstractDefinition extends AbstractLocatable implements De
     @Override
     public Type getType() {
         return type;
+    }
+
+    @Override
+    public int getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(int scope) {
+        this.scope = scope;
     }
 }

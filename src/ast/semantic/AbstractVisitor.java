@@ -163,9 +163,7 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     @Override
     public RT visit(FunctionType p, PT param) {
         p.getReturnType().accept(this, param);
-        for(var definition : p.getVarDefinitionList()){
-            definition.accept(this, param);
-        }
+        p.getVarDefinitionList().forEach(definition -> definition.accept(this, param));
         return null;
     }
 
@@ -200,12 +198,8 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     @Override
     public RT visit(FuncDefinition funcDefinition, PT param) {
         funcDefinition.getType().accept(this, param);
-        for(var definition : funcDefinition.getVariablesList()){
-            definition.accept(this, param);
-        }
-        for(var statement : funcDefinition.getStatementList()){
-            statement.accept(this, param);
-        }
+        funcDefinition.getVariablesList().forEach(variable -> variable.accept(this, param));
+        funcDefinition.getStatementList().forEach(stmt -> stmt.accept(this, param));
         return null;
     }
 

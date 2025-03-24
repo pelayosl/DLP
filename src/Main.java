@@ -1,5 +1,6 @@
 import ast.ErrorHandler;
 import ast.Visitor;
+import ast.semantic.IdentificationVisitor;
 import ast.semantic.LValueVisitor;
 import org.antlr.v4.runtime.*;
 import introspector.model.IntrospectorModel;
@@ -27,6 +28,8 @@ public class Main {
 
 		Visitor lValueVisitor = new LValueVisitor();
 		ast.accept(lValueVisitor, null);
+		Visitor idVisitor = new IdentificationVisitor();
+		ast.accept(idVisitor, null);
 
 		// * Check errors
 		if(ErrorHandler.getInstance().anyError()){

@@ -26,9 +26,7 @@ public class RecordType implements Type {
                 uniqueFields.add(recordField.getName());
             }
             else if (nameCount.get(recordField.getName()) > 1) {
-                ErrorHandler
-                        .getInstance()
-                        .addError(new ErrorType(recordField.getName() + " is already defined in this scope", recordField));
+                new ErrorType(recordField.getName() + " is already defined in this scope", recordField);
             }
         }
     }

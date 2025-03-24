@@ -1,11 +1,12 @@
 package ast.expressions;
 
 import ast.Visitor;
-import ast.locatables.Expression;
+import ast.locatables.Definition;
 
 public class Variable extends AbstractExpression {
 
     private String name;
+    private Definition definition; // Lab 8
 
     public Variable(int line, int column, String name) {
         super(line, column);

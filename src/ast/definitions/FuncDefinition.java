@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FuncDefinition extends AbstractDefinition {
-
     private List<Statement> statementList;
     private List<Definition> variablesList;
 
@@ -40,4 +39,5 @@ public class FuncDefinition extends AbstractDefinition {
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return v.visit(this, param);
     }
+
 }

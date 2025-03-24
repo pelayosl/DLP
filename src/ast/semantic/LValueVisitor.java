@@ -7,16 +7,7 @@ import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
 
-
-// Ta mal
-/*
-
-AbstractVisitor<RT,PT> implementando a.left.visit, a.right.visit
-
-Los concretos: super.visit(a), super.visit(b) --> asi solo sobreescribimos clases relacionadas con lvalue
- */
 public class LValueVisitor extends AbstractVisitor<Void, Void> {
-    // TODO CAMBIAR ESTO!!!!!!!!!
 
     @Override
     public Void visit(Variable v, Void param) {
@@ -99,12 +90,10 @@ public class LValueVisitor extends AbstractVisitor<Void, Void> {
     public Void visit(Assignment a, Void param) {
         super.visit( a, param );
         if(!a.getExpression1().getLvalue()){
-            ErrorHandler
-                    .getInstance()
-                    .addError(new ErrorType(
+            new ErrorType(
                             "Invalid value for the left hand " +
                                     "side of the assignment", a.getExpression1()
-                    ));
+                    );
         }
         return null;
     }
