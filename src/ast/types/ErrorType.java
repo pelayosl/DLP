@@ -6,7 +6,7 @@ import ast.Type;
 import ast.Visitor;
 
 //wrong input 1 obligatorio, el 2 se hace la próxima semana
-public class ErrorType implements Type {
+public class ErrorType extends AbstractType {
     private final String message;
     private final Locatable location;
 
@@ -25,5 +25,20 @@ public class ErrorType implements Type {
     @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return v.visit(this, param);
+    }
+
+    @Override
+    public void mustBeLogical(Locatable l){
+        // Empty
+    }
+
+    @Override
+    public void mustBeBuiltIn(Locatable l){
+        // Empty
+    }
+
+    @Override
+    public void mustPromoteTo(Type t, Locatable l){
+        // Empty
     }
 }

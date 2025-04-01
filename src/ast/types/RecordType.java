@@ -1,13 +1,14 @@
 package ast.types;
 
 import ast.ErrorHandler;
+import ast.Locatable;
 import ast.Type;
 import ast.Visitor;
 import ast.definitions.VarDefinition;
 
 import java.util.*;
 
-public class RecordType implements Type {
+public class RecordType extends AbstractType{
 
     private List<RecordField> recordFieldList;
 
@@ -42,5 +43,15 @@ public class RecordType implements Type {
     @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return v.visit(this, param);
+    }
+
+    @Override
+    public Type dot (String fieldName, Locatable l){
+        for (RecordField field : recordFieldList) {
+            if (field.getName().equals(fieldName)) {
+                return field.getType();
+            }
+        }
+        return super.dot(fieldName, l);
     }
 }

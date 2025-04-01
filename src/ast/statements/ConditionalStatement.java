@@ -11,6 +11,7 @@ public class ConditionalStatement extends AbstractStatement {
 
     private List<Statement> ifStatements;
     private List<Statement> elseStatements;
+    private Expression comparison; // should be condition...
 
     public ConditionalStatement(int line, int column, List<Statement> ifStatements, List<Statement> elseStatements, Expression comparison) {
         super(line, column);
@@ -51,8 +52,6 @@ public class ConditionalStatement extends AbstractStatement {
     public void setComparison(Expression comparison) {
         this.comparison = comparison;
     }
-
-    private Expression comparison;
 
     @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {

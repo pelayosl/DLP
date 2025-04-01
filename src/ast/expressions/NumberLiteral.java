@@ -1,7 +1,6 @@
 package ast.expressions;
 
 import ast.Visitor;
-import ast.locatables.Expression;
 
 public class NumberLiteral extends AbstractExpression {
 

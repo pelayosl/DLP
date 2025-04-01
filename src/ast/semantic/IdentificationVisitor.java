@@ -3,8 +3,11 @@ package ast.semantic;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.expressions.Variable;
+import ast.locatables.Definition;
 import ast.types.ErrorType;
 import symboltable.SymbolTable;
+
+import java.util.Objects;
 
 public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
     private final SymbolTable symbolTable = new SymbolTable();
@@ -32,9 +35,13 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
     @Override
     public Void visit(Variable v, Void param){
         super.visit(v, param);
-        if(symbolTable.find(v.getName()) == null){
-            new ErrorType("Definition for name '" + v.getName() + "' not found", v);
-        }
+        Definition def = symbolTable.find(v.getName());
+        v.setDefinition(Objects.requireNonNullElseGet(def, () -> new VarDefinition(
+                v.getLine(),
+                v.getColumn(),
+                new ErrorType("Definition for name '" + v.getName() + "' not found", v),
+                v.getName()
+        )));
         return null;
     }
 }

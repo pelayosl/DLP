@@ -114,12 +114,10 @@ public class LValueVisitor extends AbstractVisitor<Void, Void> {
     public Void visit(ReadStatement p, Void param) {
         super.visit( p, param );
         if(!p.getExpression().getLvalue()){
-            ErrorHandler
-                    .getInstance()
-                    .addError(new ErrorType(
+            new ErrorType(
                             "Invalid value for an " +
                                     "input statement", p.getExpression()
-                    ));
+                    );
         }
         return null;
     }
