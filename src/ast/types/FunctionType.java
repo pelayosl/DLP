@@ -56,8 +56,14 @@ public class FunctionType extends AbstractType {
     }
 
     @Override
+    public int numberOfBytes() {
+        throw new IllegalStateException("Number of bytes shouldn't be calculated for a FunctionType.");
+    }
+
+    @Override
     public void mustBeBuiltIn(Locatable l){
-        returnType.mustBeBuiltIn(l);
+        if(returnType != VoidType.getInstance()) // We allow void type functions
+            returnType.mustBeBuiltIn(l);
     }
 
 }

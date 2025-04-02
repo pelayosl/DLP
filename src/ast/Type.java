@@ -15,4 +15,7 @@ public interface Type extends ASTNode{
     public Type squareBrackets(Type t, Locatable l);
     public Type dot(String s, Locatable l);
     public Type parenthesis(List<Type> types, Locatable l);
+
+    // OffsetVisitor
+    public int numberOfBytes();
 }

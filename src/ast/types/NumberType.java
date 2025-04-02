@@ -35,6 +35,11 @@ public class NumberType extends AbstractType {
     }
 
     @Override
+    public int numberOfBytes() {
+        return 4;
+    }
+
+    @Override
     public Type comparison(Type otherType, Locatable l){
         if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
             return this;

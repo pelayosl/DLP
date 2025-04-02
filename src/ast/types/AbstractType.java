@@ -7,6 +7,7 @@ import ast.Visitor;
 import java.util.List;
 
 public abstract class AbstractType implements Type {
+
     @Override
     public void mustBeBuiltIn(Locatable l) {
         new ErrorType("Type must be a built-in type", l);
@@ -70,5 +71,10 @@ public abstract class AbstractType implements Type {
     @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return null;
+    }
+
+    @Override
+    public int numberOfBytes() {
+        return 0;
     }
 }

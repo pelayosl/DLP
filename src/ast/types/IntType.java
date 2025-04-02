@@ -50,6 +50,11 @@ public class IntType extends AbstractType {
     }
 
     @Override
+    public int numberOfBytes() {
+        return 2;
+    }
+
+    @Override
     public Type logic(Locatable l) {
         return this;
     }

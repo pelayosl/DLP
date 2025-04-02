@@ -30,6 +30,11 @@ public class CharType extends AbstractType {
     }
 
     @Override
+    public int numberOfBytes() {
+        return 1;
+    }
+
+    @Override
     public Type comparison(Type otherType, Locatable l){
         if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
             return this;
