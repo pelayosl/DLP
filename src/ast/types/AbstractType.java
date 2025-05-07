@@ -77,4 +77,9 @@ public abstract class AbstractType implements Type {
     public int numberOfBytes() {
         return 0;
     }
+
+    @Override
+    public char suffix() {
+        return 0;
+    }
 }

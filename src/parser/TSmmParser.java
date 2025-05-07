@@ -953,6 +953,7 @@ public class TSmmParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class StatementContext extends ParserRuleContext {
 		public List<Statement> ast = new ArrayList<>();
+		public Token log;
 		public ExpressionListContext expressionList;
 		public ExpressionContext ex1;
 		public ExpressionContext ex2;
@@ -996,7 +997,7 @@ public class TSmmParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(191);
-				match(T__11);
+				((StatementContext)_localctx).log = match(T__11);
 				setState(192);
 				((StatementContext)_localctx).expressionList = expressionList();
 				setState(193);
@@ -1005,8 +1006,8 @@ public class TSmmParser extends Parser {
 				                    for(Expression exp : ((StatementContext)_localctx).expressionList.ast){
 				                                            _localctx.ast.add(
 				                                                new WriteStatement(
-				                                                    exp.getLine(),
-				                                                    exp.getColumn(),
+				                                                    ((StatementContext)_localctx).log.getLine(),
+				                                                    ((StatementContext)_localctx).log.getCharPositionInLine()+1,
 				                                                    exp
 				                                                )
 				                                            );

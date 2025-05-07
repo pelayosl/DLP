@@ -54,4 +54,37 @@ public class RecordType extends AbstractType{
         }
         return super.dot(fieldName, l);
     }
+
+    @Override
+    public int numberOfBytes() {
+        return this.recordFieldList
+                .stream()
+                .mapToInt(
+                        rf -> rf.getType()
+                                           .numberOfBytes()
+                )
+                .sum();
+    }
+
+    public RecordField getField(String fieldName) {
+        return recordFieldList.stream()
+                              .filter(rf -> rf.getName()
+                                                         .equals(fieldName))
+                              .findFirst()
+                              .orElse(null);
+    }
+
+    @Override
+    public String toString() {
+        String aux = "RecordType[fields:[";
+        for(RecordField rf : recordFieldList) {
+            aux += "Field[";
+            aux += "name:" + rf.getName() + ",";
+            aux += "type:" + rf.getType() + " ";
+            aux += "offsset:" + rf.getOffset() + "],";
+        }
+        aux += "]] ";
+        return aux;
+    }
+
 }

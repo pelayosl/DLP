@@ -145,12 +145,12 @@ expressionList returns [List<Expression> ast]:
         ;
 
 statement returns [List<Statement> ast = new ArrayList<>()]:
-        'log' expressionList ';' {
+        log='log' expressionList ';' {
                     for(Expression exp : $expressionList.ast){
                                             $ast.add(
                                                 new WriteStatement(
-                                                    exp.getLine(),
-                                                    exp.getColumn(),
+                                                    $log.getLine(),
+                                                    $log.getCharPositionInLine()+1,
                                                     exp
                                                 )
                                             );

@@ -131,17 +131,10 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     public Void visit(FuncDefinition f, Type param) {
         FunctionType fType = (FunctionType) f.getType();
         super.visit(f, fType.getReturnType());
-        f.getVariablesList().forEach(variable -> variable.getType().mustBeBuiltIn(variable));
         f.getType().mustBeBuiltIn(f);
         return null;
     }
 
-    @Override
-    public Void visit(Cast c, Type param) {
-        super.visit(c, param);
-        c.setType(c.getExpression().getType().canBeCastedTo(c.getType(), c));
-        return null;
-    }
 
     @Override
     public Void visit(FieldAccess f, Type param) {

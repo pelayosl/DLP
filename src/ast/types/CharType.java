@@ -60,4 +60,23 @@ public class CharType extends AbstractType {
             super.mustPromoteTo(otherType, l);
     }
 
+    @Override
+    public Type canBeCastedTo(Type otherType, Locatable l){
+        if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
+            return this;
+        if(otherType instanceof ErrorType){
+            return otherType;
+        }
+        return super.arithmetic(otherType, l);
+    }
+
+    @Override
+    public String toString(){
+        return "char";
+    }
+
+    @Override
+    public char suffix(){
+        return 'b';
+    }
 }

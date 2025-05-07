@@ -60,6 +60,11 @@ public class IntType extends AbstractType {
     }
 
     @Override
+    public Type logic(Type t, Locatable l) {
+        return this;
+    }
+
+    @Override
     public void mustPromoteTo(Type otherType, Locatable l) {
         if(!(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType))
             super.mustPromoteTo(otherType, l);
@@ -78,6 +83,16 @@ public class IntType extends AbstractType {
             return otherType;
         }
         return super.arithmetic(otherType, l);
+    }
+
+    @Override
+    public String toString(){
+        return "int";
+    }
+
+    @Override
+    public char suffix(){
+        return 'i';
     }
 
 }

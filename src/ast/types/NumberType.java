@@ -60,4 +60,14 @@ public class NumberType extends AbstractType {
             super.mustPromoteTo(otherType, l);
     }
 
+    @Override
+    public String toString(){
+        return "real";
+    }
+
+    @Override
+    public char suffix(){
+        return 'f';
+    }
+
 }

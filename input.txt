@@ -8,6 +8,10 @@ let record: [
 // Functions
 function f(a:int, c:number):int {
   let real:number;
+  let record: [
+    let intField:int;
+   let realField:number;
+  ];
   real = c;
   i = a;
   return n;

@@ -18,4 +18,7 @@ public interface Type extends ASTNode{
 
     // OffsetVisitor
     public int numberOfBytes();
+
+    // CGVisitor
+    public char suffix();
 }

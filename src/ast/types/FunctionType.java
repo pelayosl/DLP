@@ -14,6 +14,8 @@ public class FunctionType extends AbstractType {
     private Type returnType;
     private List<Definition> varDefinitionList;
 
+    private int paramBytesSum, returnBytesSum;
+
     public FunctionType(Type returnType, List<Definition> varDefinitionList) {
         this.returnType = returnType;
         this.varDefinitionList = varDefinitionList;
@@ -64,6 +66,18 @@ public class FunctionType extends AbstractType {
     public void mustBeBuiltIn(Locatable l){
         if(returnType != VoidType.getInstance()) // We allow void type functions
             returnType.mustBeBuiltIn(l);
+    }
+
+    public int getParamBytesSum() {
+        return varDefinitionList.stream()
+                                .mapToInt(v -> v.getType().numberOfBytes())
+                                .sum();
+    }
+
+    public int getReturnBytesSum() {
+        if(returnType != VoidType.getInstance())
+            return returnType.numberOfBytes();
+        else return 0;
     }
 
 }

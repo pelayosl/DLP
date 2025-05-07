@@ -5,7 +5,6 @@ import ast.Visitor;
 import ast.locatables.Definition;
 import ast.locatables.Statement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FuncDefinition extends AbstractDefinition {
@@ -29,6 +28,12 @@ public class FuncDefinition extends AbstractDefinition {
 
     public List<Definition> getVariablesList() {
         return variablesList;
+    }
+
+    public int localBytesSum() {
+        if(variablesList.isEmpty())
+            return 0;
+        return -((VarDefinition) variablesList.getLast()).getOffset();
     }
 
     public void setVariablesList(List<Definition> variablesList) {
