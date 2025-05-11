@@ -7,6 +7,8 @@ import ast.locatables.Expression;
 import ast.statements.*;
 import ast.types.*;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 
 public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
 
@@ -159,6 +161,13 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     public Void visit(ReturnStatement r, Type returnType) {
         super.visit(r, returnType);
         r.getExpression().getType().mustPromoteTo(returnType, r);
+        return null;
+    }
+
+    @Override
+    public Void visit(Cast c, Type param) {
+        super.visit(c, param);
+        c.setType(c.getExpression().getType().canBeCastedTo(c.getType(), c));
         return null;
     }
 

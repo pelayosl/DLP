@@ -70,4 +70,14 @@ public class NumberType extends AbstractType {
         return 'f';
     }
 
+    @Override
+    public Type canBeCastedTo(Type otherType, Locatable l){
+        if(otherType instanceof NumberType)
+            return otherType;
+        if(otherType instanceof ErrorType){
+            return otherType;
+        }
+        return super.canBeCastedTo(otherType, l);
+    }
+
 }

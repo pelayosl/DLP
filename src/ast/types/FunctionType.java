@@ -50,7 +50,9 @@ public class FunctionType extends AbstractType {
 
         for (int i = 0; i < varDefinitionList.size(); i++) {
             if (!argTypes.get(i).equals(varDefinitionList.get(i).getType())) {
-                return new ErrorType("Argument " + (i+1) + " type mismatch", l);
+                return new ErrorType("Argument " + (i+1) + " type mismatch: " +
+                        "expected " + varDefinitionList.get(i).getType().toString() + " but received " +
+                        argTypes.get(i), l);
             }
         }
 

@@ -63,11 +63,11 @@ public class CharType extends AbstractType {
     @Override
     public Type canBeCastedTo(Type otherType, Locatable l){
         if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
-            return this;
+            return otherType;
         if(otherType instanceof ErrorType){
             return otherType;
         }
-        return super.arithmetic(otherType, l);
+        return super.canBeCastedTo(otherType, l);
     }
 
     @Override
