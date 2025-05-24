@@ -43,8 +43,8 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
     @Override
     public Void visit(Arithmetic a, Void param) {
         a.getLeft().accept(this, param);
-        a.getRight().accept(this, param);
         codeGenerator.convertTo(a.getLeft().getType(), a.getType());
+        a.getRight().accept(this, param);
         codeGenerator.convertTo(a.getRight().getType(), a.getType());
         codeGenerator.arithmetic(a.getOperator(), a.getType());
         return null;
@@ -84,14 +84,14 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 
     @Override
     public Void visit(ArrayAccess a, Void param) {
-        a.getArray().accept(addressCGVisitor, param);
+        a.accept(addressCGVisitor, param);
         codeGenerator.load(a.getType());
         return null;
     }
 
     @Override
     public Void visit(FieldAccess f, Void param) {
-        f.getExpression().accept(addressCGVisitor, param);
+        f.accept(addressCGVisitor, param);
         codeGenerator.load(f.getType());
         return null;
     }

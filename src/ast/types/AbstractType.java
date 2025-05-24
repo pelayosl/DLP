@@ -45,7 +45,7 @@ public abstract class AbstractType implements Type {
 
     @Override
     public Type canBeCastedTo(Type t, Locatable l) {
-        return new ErrorType("Type " + this.getClass() + " cannot be casted to " + t, l);
+        return  new ErrorType("Type " + this.getClass() + " cannot be casted to " + t, l);
     }
 
     @Override

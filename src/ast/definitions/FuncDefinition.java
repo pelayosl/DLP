@@ -10,6 +10,7 @@ import java.util.List;
 public class FuncDefinition extends AbstractDefinition {
     private List<Statement> statementList;
     private List<Definition> variablesList;
+    private int localBytesSum;
 
     public FuncDefinition(int line, int column, List<Definition> variablesList,
                           List<Statement> statementList, Type functionType, String name) {
@@ -30,12 +31,12 @@ public class FuncDefinition extends AbstractDefinition {
         return variablesList;
     }
 
-    public int localBytesSum() {
-        if(variablesList.isEmpty())
-            return 0;
-        return -((VarDefinition) variablesList.getLast()).getOffset();
+    public int getLocalBytesSum() {
+        return localBytesSum;
     }
-
+    public void setLocalBytesSum(int localBytesSum) {
+        this.localBytesSum = localBytesSum;
+    }
     public void setVariablesList(List<Definition> variablesList) {
         this.variablesList = variablesList;
     }

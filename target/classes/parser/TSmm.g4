@@ -19,7 +19,6 @@ program returns [Program ast] locals [List<Definition> definitions = new ArrayLi
        EOF { $ast = new Program($definitions);}
        ;
 
-
 definition returns [List<Definition> ast = new ArrayList<>()]:
             (vars=variable_definition{$ast.addAll($vars.ast);})+
           | (funcs=function_definition{$ast.add($funcs.ast);})+
@@ -233,11 +232,11 @@ expression returns [Expression ast]:
                           $ex2.ast
                           );
                       }
-       | e1=expression '.' ID {
+       | ex1=expression '.' ID {
                       $ast = new FieldAccess(
-                          $e1.ast.getLine(),
-                          $e1.ast.getColumn(),
-                          $e1.ast,
+                          $ex1.ast.getLine(),
+                          $ex1.ast.getColumn(),
+                          $ex1.ast,
                           $ID.text
                           );
                       }

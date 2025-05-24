@@ -18,7 +18,7 @@ public class CodeGenerator extends AbstractCGVisitor<Void, Void> {
 
 
     public void call(String function) {
-        out.println("\tcall "+function);
+        out.println("\tcall\t"+function);
         out.flush();
     }
 
@@ -39,7 +39,7 @@ public class CodeGenerator extends AbstractCGVisitor<Void, Void> {
         out.flush();
     }
     public void halt(){
-        out.println("halt");
+        out.println("halt\n");
         out.flush();
     }
 
@@ -209,6 +209,7 @@ public class CodeGenerator extends AbstractCGVisitor<Void, Void> {
     }
 
     public void pop(char suffix) {
-
+        out.println("\tpop" + suffix);
+        out.flush();
     }
 }

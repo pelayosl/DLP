@@ -4,6 +4,7 @@ import ast.definitions.VarDefinition;
 import ast.expressions.ArrayAccess;
 import ast.expressions.FieldAccess;
 import ast.expressions.Variable;
+import ast.types.IntType;
 import ast.types.RecordField;
 import ast.types.RecordType;
 
@@ -25,18 +26,19 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         else{
             codeGenerator.pushBP();
             codeGenerator.push(((VarDefinition) v.getDefinition()).getOffset());
-            codeGenerator.add(v.getType());
+            codeGenerator.add(IntType.getInstance());
         }
         return null;
     }
 
     @Override
     public Void visit(ArrayAccess a, Void param){
+        System.out.println(a.getArray().getType() + "[" + ((Variable)a.getIndex()).getName()+ "]");
         a.getArray().accept(this, param);
         a.getIndex().accept(valueCGVisitor, param);
         codeGenerator.push(a.getType().numberOfBytes());
-        codeGenerator.mul(a.getType());
-        codeGenerator.add(a.getType());
+        codeGenerator.mul(IntType.getInstance());
+        codeGenerator.add(IntType.getInstance());
         return null;
     }
 
@@ -46,6 +48,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         RecordType rt = (RecordType)fa.getExpression().getType();
         RecordField rf = rt.getField(fa.getField());
         codeGenerator.push(rf.getOffset());
+        codeGenerator.add(IntType.getInstance());
         return null;
     }
 }

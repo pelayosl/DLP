@@ -26,14 +26,14 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
     public Void visit(Program p, FuncDefinition param ) {
         for(Definition def : p.getDefinitions()) {
             if(def instanceof VarDefinition){
-                def.accept(this, null);
+                def.accept(this, param);
             }
         }
         codeGenerator.callMain();
         codeGenerator.halt();
         for(Definition def : p.getDefinitions()) {
             if(def instanceof FuncDefinition){
-                def.accept(this, null);
+                def.accept(this, param);
             }
         }
         return null;
@@ -60,6 +60,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
 
     @Override
     public Void visit(FuncDefinition f, FuncDefinition param) {
+        System.out.println("New function");
         codeGenerator.printLine(f.getLine());
         codeGenerator.printFunction(f.getName());
         codeGenerator.printComment("Parameters");
@@ -68,29 +69,39 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         f.getVariablesList().forEach( v -> { // Local variables
             v.accept(this, null);
         });
-        codeGenerator.enter(f.localBytesSum());
+        int bytesLocals = f.getVariablesList().isEmpty()? 0 : -((VarDefinition) f.getVariablesList().getLast()).getOffset();
+        codeGenerator.enter(bytesLocals);
+        f.setLocalBytesSum(bytesLocals);
+        FunctionType type = ((FunctionType) f.getType());
+        int bytesParams = type.getVarDefinitionList()
+                        .stream().mapToInt(p -> p.getType().numberOfBytes()).sum();
+        type.setParamBytesSum(bytesParams);
+        int bytesReturn = type.getReturnType().numberOfBytes();
+        type.setReturnBytesSum(bytesReturn);
         f.getStatementList().forEach( s -> {
             if(!(s instanceof VarDefinition)){
-                s.accept(this, null);
+                s.accept(this, f); // cambié esto a ver si funciona, estaba a null entonces nunca le pasaba
+                // el function definition al return statement
             }
         });
         // If it's void, returnstatement will never be called
         FunctionType ft = (FunctionType) f.getType();
         if( ft.getReturnType() == VoidType.getInstance() )
-            codeGenerator.ret(ft.getReturnBytesSum(), f.localBytesSum(), ft.getParamBytesSum());
+            codeGenerator.ret(ft.getReturnBytesSum(), f.getLocalBytesSum(), ft.getParamBytesSum());
         return null;
     }
 
     @Override
     public Void visit(ReturnStatement r, FuncDefinition param) {
-        r.getExpression().accept(this, null);
+        codeGenerator.printLine(r.getLine());
+        codeGenerator.printComment("Return");
+        r.getExpression().accept(valueCGVisitor, null);
         codeGenerator.ret(
-                r.getExpression()
-                        .getType()
-                        .numberOfBytes(),
                 ((FunctionType) param.getType())
-                        .getParamBytesSum(),
-                param.localBytesSum()
+                        .getReturnBytesSum(),
+                param.getLocalBytesSum(),
+                ((FunctionType) param.getType())
+                        .getParamBytesSum()
         );
         return null;
     }
@@ -158,9 +169,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
 
     @Override
     public Void visit(FunctionInvocation f, FuncDefinition param){
+        codeGenerator.printLine(f.getLine());
         f.accept(valueCGVisitor, null);
-        if(f.getVariable().getType() != VoidType.getInstance()){
-            codeGenerator.pop(f.getType().suffix());
+        if(((FunctionType)f.getVariable().getType()).getReturnType() != VoidType.getInstance()){
+            codeGenerator.pop(((FunctionType) f.getVariable().getType()).getReturnType().suffix());
         }
         return null;
     }

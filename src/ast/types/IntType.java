@@ -26,8 +26,10 @@ public class IntType extends AbstractType {
 
     @Override
     public Type arithmetic(Type otherType, Locatable l){
-        if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
+        if(otherType instanceof IntType || otherType instanceof CharType)
             return this;
+        if(otherType instanceof NumberType)
+            return otherType;
         if(otherType instanceof ErrorType){
             return otherType;
         }
@@ -87,7 +89,7 @@ public class IntType extends AbstractType {
 
     @Override
     public String toString(){
-        return "int";
+        return "IntType";
     }
 
     @Override

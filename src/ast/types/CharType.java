@@ -21,8 +21,8 @@ public class CharType extends AbstractType {
 
     @Override
     public Type arithmetic(Type otherType, Locatable l){
-        if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
-            return this;
+        if(otherType instanceof IntType || otherType instanceof CharType)
+            return IntType.getInstance();
         if(otherType instanceof ErrorType){
             return otherType;
         }
@@ -72,7 +72,7 @@ public class CharType extends AbstractType {
 
     @Override
     public String toString(){
-        return "char";
+        return "CharType";
     }
 
     @Override

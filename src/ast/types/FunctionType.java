@@ -60,26 +60,25 @@ public class FunctionType extends AbstractType {
     }
 
     @Override
-    public int numberOfBytes() {
-        throw new IllegalStateException("Number of bytes shouldn't be calculated for a FunctionType.");
-    }
-
-    @Override
     public void mustBeBuiltIn(Locatable l){
         if(returnType != VoidType.getInstance()) // We allow void type functions
             returnType.mustBeBuiltIn(l);
     }
 
-    public int getParamBytesSum() {
-        return varDefinitionList.stream()
-                                .mapToInt(v -> v.getType().numberOfBytes())
-                                .sum();
+    public int getReturnBytesSum() {
+        return returnBytesSum;
     }
 
-    public int getReturnBytesSum() {
-        if(returnType != VoidType.getInstance())
-            return returnType.numberOfBytes();
-        else return 0;
+    public int getParamBytesSum() {
+        return paramBytesSum;
+    }
+
+    public void setReturnBytesSum(int returnBytesSum) {
+        this.returnBytesSum = returnBytesSum;
+    }
+
+    public void setParamBytesSum(int paramBytesSum) {
+        this.paramBytesSum = paramBytesSum;
     }
 
 }

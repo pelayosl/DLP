@@ -77,13 +77,20 @@ public class RecordType extends AbstractType{
     @Override
     public String toString() {
         String aux = "RecordType[fields:[";
-        for(RecordField rf : recordFieldList) {
+        RecordField rf = null;
+        for(int i = 0; i < recordFieldList.size()-1; i++) {
+            rf = recordFieldList.get(i);
             aux += "Field[";
             aux += "name:" + rf.getName() + ",";
             aux += "type:" + rf.getType() + " ";
-            aux += "offsset:" + rf.getOffset() + "],";
+            aux += "offset:" + rf.getOffset() + "], ";
         }
-        aux += "]] ";
+        rf = recordFieldList.getLast();
+        aux += "Field[";
+        aux += "name:" + rf.getName() + ",";
+        aux += "type:" + rf.getType() + " ";
+        aux += "offset:" + rf.getOffset() + "]";
+        aux += "]]";
         return aux;
     }
 

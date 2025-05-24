@@ -62,7 +62,7 @@ public class NumberType extends AbstractType {
 
     @Override
     public String toString(){
-        return "real";
+        return "RealType";
     }
 
     @Override

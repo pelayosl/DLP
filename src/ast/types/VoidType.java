@@ -17,8 +17,4 @@ public class VoidType extends AbstractType {
         return v.visit(this, param);
     }
 
-    @Override
-    public int numberOfBytes() {
-        throw new IllegalStateException("Number of bytes shouldn't be calculated for a Void Type.");
-    }
 }
