@@ -166,4 +166,28 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
         return null;
     }
 
+    /*
+     * value[[ TernaryOperator: expression1 -> expression2 expression3 ]]() =
+     *   value[[ expression1 ]]
+     *   int label1 = cg.getLabels(2)
+     *   jz label1
+     *   value[[ expression2 ]]
+     *   jmp label1+1
+     *   label label1:
+     *   value[[ expression3 ]]
+     *   label label1+1
+     */
+    @Override
+    public Void visit(TernaryOperator op, Void param) {
+        op.getCondition().accept(this, param);
+        int label1 = codeGenerator.getLabels(2);
+        codeGenerator.jz(label1);
+        op.getLeft().accept(this, param);
+        codeGenerator.jmp(label1+1);
+        codeGenerator.label(label1);
+        op.getRight().accept(this, param);
+        codeGenerator.label(label1+1);
+        return null;
+    }
+
 }

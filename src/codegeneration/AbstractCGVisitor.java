@@ -70,6 +70,11 @@ public class AbstractCGVisitor<TR, TP> implements Visitor<TR, TP> {
     }
 
     @Override
+    public TR visit(TernaryOperator op, TP param) {
+        return null;
+    }
+
+    @Override
     public TR visit(Program p, TP param) {
         throw new IllegalStateException("Illegal access to Program");
     }

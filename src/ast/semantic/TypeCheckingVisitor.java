@@ -158,4 +158,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
         return null;
     }
 
+    @Override
+    public Void visit(TernaryOperator op, Type param) {
+        System.out.println("EXECUTING TERNARY");
+        super.visit(op, param);
+        op.getCondition().getType().mustBeLogical(op);
+        op.getLeft().getType().mustPromoteTo(op.getRight().getType(), op); // They must be the same type
+        op.setType(op.getLeft().getType());
+        return null;
+    }
+
 }

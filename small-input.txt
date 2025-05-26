@@ -1,6 +1,7 @@
-function main(): void{ // Uncomment to test
-	let a:int;
-	let b:char;
-    let c:number;
-    c = 2;
+function g(): int{ // Uncomment to test
+	return ( 1 > 2 ? 3 : 4 ); // it should return 4
+}
+
+function main(): void {
+    log g();
 }

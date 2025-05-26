@@ -83,6 +83,14 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     }
 
     @Override
+    public RT visit(TernaryOperator op, PT param) {
+        op.getCondition().accept(this, param);
+        op.getLeft().accept(this, param);
+        op.getRight().accept(this, param);
+        return null;
+    }
+
+    @Override
     public RT visit(Program p, PT param) {
         for(var definition : p.getDefinitions()){
             definition.accept(this, param);

@@ -314,6 +314,15 @@ expression returns [Expression ast]:
                       $NUMBER_LITERAL.getCharPositionInLine()+1,
                       LexerHelper.lexemeToReal($NUMBER_LITERAL.text));
                       }
+       | ex1=expression '?' ex2=expression ':' ex3=expression{
+                     $ast = new TernaryOperator(
+                         $ex1.ast.getLine(),
+                         $ex2.ast.getColumn(),
+                         $ex1.ast,
+                         $ex2.ast,
+                         $ex3.ast
+                     );
+                }
        ;
 
 type returns [Type ast] locals [List<RecordField> recordFields = new ArrayList<>()]:
