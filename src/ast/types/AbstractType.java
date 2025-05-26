@@ -40,7 +40,7 @@ public abstract class AbstractType implements Type {
 
     @Override
     public void mustPromoteTo(Type t, Locatable l) {
-        new ErrorType("Type " + this.getClass() + " not promotable to type " + t.getClass(), l);
+        new ErrorType("Type " + this + " not promotable to type " + t, l);
     }
 
     @Override
