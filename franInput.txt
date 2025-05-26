@@ -1,0 +1,12 @@
+let a : char;
+let b : char;
+
+function main() : void {
+    let c : char;
+    a = 'a';
+    b = 'b';
+    c = a + b;
+    log 'a',':', a;
+    log 'b',':', b;
+    log 'c',':',c;
+}

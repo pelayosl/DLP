@@ -105,6 +105,7 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
         for(var statement : p.getElseStatements()){
             statement.accept(this, param);
         }
+        p.getComparison().accept(this, param);
         return null;
     }
 

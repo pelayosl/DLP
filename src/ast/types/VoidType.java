@@ -1,9 +1,9 @@
 package ast.types;
 
-import ast.Type;
+import ast.Locatable;
 import ast.Visitor;
 
-public class VoidType implements Type {
+public class VoidType extends AbstractType {
     private static final VoidType INSTANCE = new VoidType();
 
     private VoidType() {}
@@ -16,4 +16,5 @@ public class VoidType implements Type {
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return v.visit(this, param);
     }
+
 }

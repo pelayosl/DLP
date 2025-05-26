@@ -7,7 +7,7 @@ import ast.locatables.Statement;
 
 public class VarDefinition extends AbstractDefinition implements Statement {
 
-
+    private int offset;
     public VarDefinition(int line, int column, Type type, String name) {
         super(line, column, name, type);
 
@@ -17,7 +17,12 @@ public class VarDefinition extends AbstractDefinition implements Statement {
         super(line, column, name, type);
 
     }
-
+    public int getOffset(){
+        return offset;
+    }
+    public void setOffset(int offset){
+        this.offset = offset;
+    }
 
     @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {

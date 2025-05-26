@@ -1,5 +1,6 @@
 package ast.statements;
 
+import ast.Type;
 import ast.Visitor;
 import ast.expressions.AbstractExpression;
 import ast.locatables.Expression;
@@ -9,6 +10,8 @@ import ast.locatables.Statement;
 import java.util.List;
 
 public class FunctionInvocation extends AbstractStatement implements Expression {
+
+    private Type type; // Lab 9
 
     private Variable variable;
     private List<Expression> expressionList;
@@ -48,5 +51,15 @@ public class FunctionInvocation extends AbstractStatement implements Expression 
     @Override
     public void setLvalue(boolean lvalue) {
 
+    }
+
+    @Override
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    @Override
+    public Type getType() {
+        return type;
     }
 }

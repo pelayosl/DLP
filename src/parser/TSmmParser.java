@@ -953,6 +953,7 @@ public class TSmmParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class StatementContext extends ParserRuleContext {
 		public List<Statement> ast = new ArrayList<>();
+		public Token log;
 		public ExpressionListContext expressionList;
 		public ExpressionContext ex1;
 		public ExpressionContext ex2;
@@ -996,7 +997,7 @@ public class TSmmParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(191);
-				match(T__11);
+				((StatementContext)_localctx).log = match(T__11);
 				setState(192);
 				((StatementContext)_localctx).expressionList = expressionList();
 				setState(193);
@@ -1005,8 +1006,8 @@ public class TSmmParser extends Parser {
 				                    for(Expression exp : ((StatementContext)_localctx).expressionList.ast){
 				                                            _localctx.ast.add(
 				                                                new WriteStatement(
-				                                                    exp.getLine(),
-				                                                    exp.getColumn(),
+				                                                    ((StatementContext)_localctx).log.getLine(),
+				                                                    ((StatementContext)_localctx).log.getCharPositionInLine()+1,
 				                                                    exp
 				                                                )
 				                                            );
@@ -1273,7 +1274,6 @@ public class TSmmParser extends Parser {
 	public static class ExpressionContext extends ParserRuleContext {
 		public Expression ast;
 		public ExpressionContext ex1;
-		public ExpressionContext e1;
 		public ExpressionContext expression;
 		public TypeContext type;
 		public Function_invocationContext function_invocation;
@@ -1598,7 +1598,7 @@ public class TSmmParser extends Parser {
 					case 6:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
-						_localctx.e1 = _prevctx;
+						_localctx.ex1 = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(318);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
@@ -1608,9 +1608,9 @@ public class TSmmParser extends Parser {
 						((ExpressionContext)_localctx).ID = match(ID);
 
 						                                ((ExpressionContext)_localctx).ast =  new FieldAccess(
-						                                    ((ExpressionContext)_localctx).e1.ast.getLine(),
-						                                    ((ExpressionContext)_localctx).e1.ast.getColumn(),
-						                                    ((ExpressionContext)_localctx).e1.ast,
+						                                    ((ExpressionContext)_localctx).ex1.ast.getLine(),
+						                                    ((ExpressionContext)_localctx).ex1.ast.getColumn(),
+						                                    ((ExpressionContext)_localctx).ex1.ast,
 						                                    (((ExpressionContext)_localctx).ID!=null?((ExpressionContext)_localctx).ID.getText():null)
 						                                    );
 						                                
