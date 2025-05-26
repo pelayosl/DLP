@@ -49,6 +49,33 @@ variable_definition returns [List<Definition> ast = new ArrayList<>()]:
               }
               ;
 
+local_variable_definition returns [List<Definition> ast = new ArrayList<>()]:
+        variable_definition
+       | 'let' ID variableList ':' t=type '=' expression ';'
+        {
+                          $ast.add(new VarDefinition(
+                              $ID.getLine(),
+                              $ID.getCharPositionInLine()+1,
+                              $t.ast,
+                              $ID.text
+                              )
+                          );
+
+                          for(Token id : $variableList.ast) {
+                              $ast.add(
+                                  new VarDefinition(
+                                      id.getLine(),
+                                      id.getCharPositionInLine()+1,
+                                      $t.ast,
+                                      id.getText(),
+                                      $expression.ast
+                                  )
+                              );
+                          }
+                     }
+        ;
+
+
 variableList returns [List<Token> ast]:
         {$ast = new ArrayList<>();}
        (',' ID { $ast.add($ID); })*
@@ -59,7 +86,7 @@ function_definition returns [Definition ast] locals [Type returnType,
                                                     List<Statement> stmts = new ArrayList<>(),
                                                     List<Definition> params = new ArrayList<>()]:
                      'function' ID '(' (function_parameters {$params.addAll($function_parameters.ast);})? ')' ':' (t=built_in_type{$returnType=$t.ast;}|'void'{$returnType=VoidType.getInstance();})
-                    '{' (variable_definition{$vars.addAll($variable_definition.ast);})* (statement{$stmts.addAll($statement.ast);})* '}' {
+                    '{' (local_variable_definition{$vars.addAll($local_variable_definition.ast);})* (statement{$stmts.addAll($statement.ast);})* '}' {
 
                         $ast = new FuncDefinition(
                             $ID.getLine(),
@@ -81,7 +108,7 @@ main_definition returns [Definition ast] locals [Type returnType,
                                                     List<Statement> stmts = new ArrayList<>(),
                                                     List<Definition> params = new ArrayList<>()]:
                      'function' id='main' '(' (function_parameters {$params.addAll($function_parameters.ast);})? ')' ':' (t=built_in_type{$returnType=$t.ast;}|'void'{$returnType=VoidType.getInstance();})
-                    '{' (variable_definition{$vars.addAll($variable_definition.ast);})* (statement{$stmts.addAll($statement.ast);})* '}' {
+                    '{' (local_variable_definition{$vars.addAll($local_variable_definition.ast);})* (statement{$stmts.addAll($statement.ast);})* '}' {
 
                         $ast = new FuncDefinition(
                             $id.getLine(),
