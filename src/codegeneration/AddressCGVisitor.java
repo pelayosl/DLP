@@ -19,6 +19,15 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         this.valueCGVisitor = valueCGVisitor;
     }
 
+    /*
+     * address[[ Variable: expression -> ID ]]() =
+     *   if( expression.definition.scope == 0 )
+     *     <pusha> expression.definition.offset
+     *   else
+     *    <push bp>
+     *    <pushi> expression.definition.offset
+     *    <addi>
+     */
     @Override
     public Void visit(Variable v, Void param){
         if(v.getDefinition().getScope() == 0)
@@ -31,9 +40,16 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         return null;
     }
 
+    /*
+     * address[[ ArrayAccess: expression1 -> expression2 expression3 ]]() =
+     *   address[[ expression2 ]]
+     *   value[[ expression3 ]]
+     *   <pushi> expression1.type.numberOfBytes()
+     *   <muli>
+     *   <addi>
+     */
     @Override
     public Void visit(ArrayAccess a, Void param){
-        System.out.println(a.getArray().getType() + "[" + ((Variable)a.getIndex()).getName()+ "]");
         a.getArray().accept(this, param);
         a.getIndex().accept(valueCGVisitor, param);
         codeGenerator.push(a.getType().numberOfBytes());
@@ -42,6 +58,12 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         return null;
     }
 
+    /*
+     * address[[ FieldAccess: expresssion1 -> expression2 ID ]]() =
+     *   address[[ expression2 ]]
+     *   <pushi> expression2.type.getField(ID).getOffset()
+     *   <addi>
+     */
     @Override
     public Void visit(FieldAccess fa, Void param) {
         fa.getExpression().accept(this, param);

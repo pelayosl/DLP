@@ -22,6 +22,18 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         addressCGVisitor.setValueCGVisitor(valueCGVisitor);
         valueCGVisitor.setAddressCGVisitor(addressCGVisitor);
     }
+
+    /*
+     * execute[[ Program: program -> definition* ]]() =
+     *   definition*.forEach( def -> {
+     *      if( def instanceof VarDefinition ) execute[[ def ]]
+     *   })
+     *   <call main>
+     *   <halt>
+     *   definition*.forEach( def -> {
+     *     if( def instanceof FuncDefinition ) execute[[ def ]]
+     *   })
+     */
     @Override
     public Void visit(Program p, FuncDefinition param ) {
         for(Definition def : p.getDefinitions()) {
@@ -39,6 +51,14 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+     * execute[[ ReadStatement: statement -> expression ]]() =
+     *   #line statement.line
+     *   ' * Read
+     *   address[[ expression ]]
+     *   <in> expression.type.suffix()
+     *   <store> expression.type.suffix()
+     */
     @Override
     public Void visit(ReadStatement r, FuncDefinition param) {
         codeGenerator.printLine(r.getLine());
@@ -49,6 +69,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+     * execute[[ WriteStatement: statement -> expression ]]() =
+     *   #line statement.line
+     *   ' * Write
+     *   value[[ expression ]]
+     *   <out> expression.type.suffix()
+     */
     @Override
     public Void visit(WriteStatement w, FuncDefinition param) {
         codeGenerator.printLine(w.getLine());
@@ -58,9 +85,28 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+     * execute[[ FuncDefinition: function -> type ID vardefinition* statement* ]]() =
+     *  #line statement.line
+     *  ID:
+     *  ' * Parameters:
+     *  execute[[ type ]]
+     *  ' * Local variables:
+     *  vardefinition*.forEach( def -> execute[[ def ]] )
+     *  int bytesLocals = vardefinition*.isEmpty() ?
+     *      0 : -vardefinition*.get(vardefinition*.size()-1).offset;
+     *  <enter> bytesLocals
+     *  int bytesParams = type.parameters.stream().mapToInt(
+     *      param -> param.type.numberOfBytes() ).sum();
+     *  int bytesReturn = type.returnType.numberOfBytes();
+     *  statement*.forEach(
+     *      stmt -> execute[[ stmt ]](bytesReturn, byetsLocals, bytesParams)
+     *  );
+     *  if(type.returnType instanceof VoidType)
+     *      ret bytesReturn, bytesLocals, bytesParams
+     */
     @Override
     public Void visit(FuncDefinition f, FuncDefinition param) {
-        System.out.println("New function");
         codeGenerator.printLine(f.getLine());
         codeGenerator.printFunction(f.getName());
         codeGenerator.printComment("Parameters");
@@ -80,8 +126,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         type.setReturnBytesSum(bytesReturn);
         f.getStatementList().forEach( s -> {
             if(!(s instanceof VarDefinition)){
-                s.accept(this, f); // cambié esto a ver si funciona, estaba a null entonces nunca le pasaba
-                // el function definition al return statement
+                s.accept(this, f);
             }
         });
         // If it's void, returnstatement will never be called
@@ -91,6 +136,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+     * execute[[ ReturnStatement: statement -> expression ]](bytesReturn, bytesLocals, bytesParams) =
+     *   #line statement.line
+     *   ' * Return
+	 *   value[[ expression ]]
+	 *   <ret> bytesReturn, bytesLocals, bytesParams
+     */
     @Override
     public Void visit(ReturnStatement r, FuncDefinition param) {
         codeGenerator.printLine(r.getLine());
@@ -106,18 +158,35 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+     * execute[[ FunctionType: type vardefinition* ]]() =
+	 *   vardefinition*.forEach( def -> execute[[ def ]] )
+     */
     @Override
     public Void visit(FunctionType ft, FuncDefinition param) {
         ft.getVarDefinitionList().forEach( v -> v.accept(this, null));
         return null;
     }
 
+    /*
+     * execute[[ VarDefinition: vardefinition -> type ID ]]() =
+	 *   ' * type.toString() ID (offset vardefinition.offset )
+     */
     @Override
     public Void visit(VarDefinition v, FuncDefinition param) {
         codeGenerator.printComment(v.getType().toString() + " " + v.getName() + " (offset " + v.getOffset() + ")");
         return null;
     }
 
+    /*
+        * execute[[ Assignment: statement -> expression1 expression2 ]]() =
+        *  #line statement.line
+        *  ' * Assignment
+        *  address[[ expression1 ]]
+        *  value[[ expression2 ]]
+        *  cg.convertTo(expression2.type, expression1.type)
+        *  <store> expression1.type.suffix()
+     */
     @Override
     public Void visit(Assignment a, FuncDefinition param) {
         codeGenerator.printLine(a.getLine());
@@ -129,6 +198,20 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+     * execute[[ WhileStatement: statement1 -> expression1 statement2* ]]() =
+     *    #line statement1.line
+     *    ' * While
+	 *    int label1 = cg.getLabels(2);
+	 *    #line  statement1.line
+	 *    label label1<:>
+	 *    value[[ expression1 ]]
+	 *    <jz> label1+1
+	 *    ' * While body
+	 *    statement*.forEach(stmt -> execute[[ stmt ]])
+	 *    <jmp> label1
+	 *    label label1+1 <:>
+     */
     @Override
     public Void visit(WhileStatement ws, FuncDefinition param) {
         codeGenerator.printLine(ws.getLine());
@@ -145,6 +228,21 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+    execute[[ ConditionalStatement: statement1 -> expression statement2* statement3* ]]() =
+        #line statement1.line
+        ' * If
+        int label1 = cg.getLabels(2)
+        #line statement1.line
+        value[[ expression ]]
+        <jz> label label1
+        ' * If body
+        statement2*.forEach( statement -> execute[[ statement ]] )
+        <jmp> label1+1
+        label label1 <:>
+        statement3*.forEach( statement -> execute[[ statement ]] )
+        label label1+1 <:>
+     */
     @Override
     public Void visit(ConditionalStatement cs, FuncDefinition param) {
         codeGenerator.printLine(cs.getLine());
@@ -167,6 +265,14 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /*
+        execute[[ FunctionInvocation: statement -> expression2 expression3* ]]() =
+            #line statement.line
+            exp3*.forEach( exp -> value[[ exp ]])
+            <call> expression2.name
+            if(!(expression1.type.returnType instanceof VoidType))
+                <pop> expression1.type.returnType.suffix()
+     */
     @Override
     public Void visit(FunctionInvocation f, FuncDefinition param){
         codeGenerator.printLine(f.getLine());

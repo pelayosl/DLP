@@ -1,6 +1,8 @@
 package codegeneration;
 
 import ast.Type;
+import ast.types.CharType;
+import ast.types.NumberType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -148,9 +150,18 @@ public class CodeGenerator extends AbstractCGVisitor<Void, Void> {
 
     public void convertTo(Type type2, Type type1) {
         if(type2.suffix() != type1.suffix()){
-            out.println("\t" + type2.suffix() + "2" + type1.suffix());
-            out.flush();
+            if(type2 == CharType.getInstance() && type1 == NumberType.getInstance()){
+                out.println("\tb2i");
+                out.println("\ti2f");
+            }
+            else if(type1 == CharType.getInstance() && type2 == NumberType.getInstance()){
+                out.println("\tf2i");
+                out.println("\ti2b");
+            }
+            else
+                out.println("\t" + type2.suffix() + "2" + type1.suffix());
         }
+        out.flush();
     }
 
     public void logic(String operator) {

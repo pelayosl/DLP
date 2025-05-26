@@ -1,0 +1,52 @@
+
+Pelayo Sierra Lobo - UO294217
+
+This file contains tbe attribute grammars for the type checking of the AST nodes.
+
+G:
+(1)  IntLiteral: expression -> INT_CONSTANT
+(2)  CharLiteral: expression -> CHAR_CONSTANT
+(3)  NumberLiteral: expression -> REAL_CONSTANT
+(4)  Variable: expression -> ID
+(5)  Logic: expression1 -> expression2 expression3
+(6)  ConditionalStatement: statement1 -> expression statement2* statement3*
+(7)  WhileStatement: statement1 -> expression statement2*
+(8)  Arithmetic: expression1 -> expression2 expression3
+(9)  UnaryMinus: expression1 -> expression2
+(10) ArrayAccess: expression1 -> expression2 expression3
+(11) Comparison: expression1 -> expression2 expression3
+(12) UnaryNot: expression1 -> expression2
+(13) Assignment: statement -> expression1 expression2
+(14) ReadStatement: statement -> expression
+(15) WriteStatement: statement -> expression
+(16) FuncDefinition: statement1 -> ID type statement2* statement3*
+(17) FieldAccess: expression1 -> expression2 ID
+(18) FunctionInvocation: expression1 -> expression2 expression3*
+(19) ReturnStatement: statement -> expression
+(20) Cast: expression1 -> expression2 type
+
+A:
+expression.type, statement.returnType
+
+R:
+(1)  expression.type = IntType
+(2)  expression.type = CharType
+(3)  expression.type = NumberType
+(4)  expression.type = expression.definition.type
+(5)  expression1.type = expression2.type.logic(expression3.type)
+(6)  statement1.expression.type.mustBeLogical()
+(7)  statement1.expression.type.mustBeLogical()
+(8)  expression1.type = expression2.type.arithmetic(expression3.type)
+(9)  expression1.type = expression2.type.arithmetic()
+(10) expression1.type = expression2.type.squareBrackets(expression3.type)
+(11) expression1.type = expression2.type.comparison(expression3.type)
+(12) expression1.type = expression2.type.logic()
+(13) expression2.type.mustPromoteTo(expression1.type)
+(14) expression.type.mustBeBuiltIn()
+(15) expression.type.mustBeBuiltIn()
+(16) type.mustBeBuiltIn()
+     statement3*.forEach(s -> s.returnType = type)
+(17) expression1.type = expression2.type.dot(ID)
+(18) expression1.type = expression2.type.parenthesis(expression3*.stream().map(e -> e.type).toList())
+(19) expression.type.mustPromoteTo(statement.returnType)
+(20) expression1.type = expression2.type.canBeCastTo(type)

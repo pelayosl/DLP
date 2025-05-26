@@ -21,7 +21,7 @@ public class NumberType extends AbstractType {
 
     @Override
     public Type arithmetic(Type otherType, Locatable l){
-        if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
+        if(otherType instanceof NumberType)
             return this;
         if(otherType instanceof ErrorType){
             return otherType;
@@ -41,8 +41,8 @@ public class NumberType extends AbstractType {
 
     @Override
     public Type comparison(Type otherType, Locatable l){
-        if(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType)
-            return this;
+        if(otherType instanceof NumberType)
+            return IntType.getInstance();
         if(otherType instanceof ErrorType){
             return otherType;
         }
@@ -71,13 +71,13 @@ public class NumberType extends AbstractType {
     }
 
     @Override
-    public Type canBeCastedTo(Type otherType, Locatable l){
-        if(otherType instanceof NumberType)
+    public Type canBeCastTo(Type otherType, Locatable l){
+        if(otherType instanceof NumberType || otherType instanceof IntType)
             return otherType;
         if(otherType instanceof ErrorType){
             return otherType;
         }
-        return super.canBeCastedTo(otherType, l);
+        return super.canBeCastTo(otherType, l);
     }
 
 }

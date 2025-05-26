@@ -20,7 +20,7 @@ public abstract class AbstractType implements Type {
 
     @Override
     public Type arithmetic(Type t, Locatable l) {
-        return new ErrorType("Expression is not arithmetic", l);
+        return new ErrorType("Arithmetic expressions not allowed between " + this + " and " + t, l);
     }
 
     @Override
@@ -44,13 +44,13 @@ public abstract class AbstractType implements Type {
     }
 
     @Override
-    public Type canBeCastedTo(Type t, Locatable l) {
-        return  new ErrorType("Type " + this.getClass() + " cannot be casted to " + t, l);
+    public Type canBeCastTo(Type t, Locatable l) {
+        return  new ErrorType("Type " + this + " cannot be casted to " + t, l);
     }
 
     @Override
     public Type comparison(Type t, Locatable l) {
-        return new ErrorType("Invalid types for a comparison", l);
+        return new ErrorType("Invalid types for a comparison: " + this + " and " + t, l);
     }
 
     @Override
@@ -65,7 +65,7 @@ public abstract class AbstractType implements Type {
 
     @Override
     public Type parenthesis(List<Type> types, Locatable l) {
-        return null;
+        return new ErrorType("Cannot invoke a non-function type", l);
     }
 
     @Override

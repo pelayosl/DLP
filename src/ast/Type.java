@@ -10,7 +10,7 @@ public interface Type extends ASTNode{
     public Type logic(Type t, Locatable l);
     public Type logic(Locatable l);
     public void mustPromoteTo(Type t, Locatable l);
-    public Type canBeCastedTo(Type t, Locatable l);
+    public Type canBeCastTo(Type t, Locatable l);
     public Type comparison(Type t, Locatable l);
     public Type squareBrackets(Type t, Locatable l);
     public Type dot(String s, Locatable l);

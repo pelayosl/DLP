@@ -41,7 +41,8 @@ halt
 	pushi	2
 	addi
 	loadb
-	b2f
+	b2i
+	i2f
 	pusha	7
 	pushi	0
 	addi

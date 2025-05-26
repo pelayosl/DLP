@@ -7,8 +7,6 @@ import ast.locatables.Expression;
 import ast.statements.*;
 import ast.types.*;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-
 
 public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
 
@@ -78,10 +76,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     @Override
     public Void visit(ArrayAccess a, Type param) {
         super.visit(a, param);
-        if (!(a.getArray().getType() instanceof ArrayType)) {
-            a.setType(new ErrorType("Cannot perform array access on non-array type", a));
-            return null;
-        }
         a.setType(a.getArray().getType().squareBrackets(a.getIndex().getType(), a));
         return null;
     }
@@ -103,9 +97,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     @Override
     public Void visit(Assignment a, Type param) {
         super.visit(a, param);
-        if (a.getExpression1().getType() instanceof ErrorType) {
-            return null;
-        }
         a.getExpression2()
                 .getType()
                 .mustPromoteTo(
@@ -148,10 +139,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     @Override
     public Void visit(FunctionInvocation f, Type param) {
         super.visit(f, param);
-        if (!(f.getVariable().getType() instanceof FunctionType)) {
-            f.setType(new ErrorType("Cannot invoke a non-function type", f));
-            return null;
-        }
         f.setType(f.getVariable().getType().parenthesis(f.getExpressionList().stream()
                 .map(Expression::getType)
                 .toList(), f));
@@ -167,7 +154,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     @Override
     public Void visit(Cast c, Type param) {
         super.visit(c, param);
-        c.setType(c.getExpression().getType().canBeCastedTo(c.getType(), c));
+        c.setType(c.getExpression().getType().canBeCastTo(c.getType(), c));
         return null;
     }
 
