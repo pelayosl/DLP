@@ -2,6 +2,7 @@ package ast.semantic;
 
 import ast.Type;
 import ast.definitions.FuncDefinition;
+import ast.definitions.VarDefinition;
 import ast.expressions.*;
 import ast.locatables.Expression;
 import ast.statements.*;
@@ -125,6 +126,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
         FunctionType fType = (FunctionType) f.getType();
         super.visit(f, fType.getReturnType());
         f.getType().mustBeBuiltIn(f);
+        return null;
+    }
+
+    @Override
+    public Void visit(VarDefinition vd, Type param) {
+        super.visit(vd, param);
+        if(vd.getValue() != null && vd.getValue().getType() != vd.getType())
+            new ErrorType("Invalid expression assigned to type " + vd.getType(), vd);
         return null;
     }
 

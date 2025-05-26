@@ -50,14 +50,17 @@ variable_definition returns [List<Definition> ast = new ArrayList<>()]:
               ;
 
 local_variable_definition returns [List<Definition> ast = new ArrayList<>()]:
-        variable_definition
+        vd=variable_definition {
+            $vd.ast.forEach(v -> $ast.add(v));
+        }
        | 'let' ID variableList ':' t=type '=' expression ';'
         {
                           $ast.add(new VarDefinition(
                               $ID.getLine(),
                               $ID.getCharPositionInLine()+1,
                               $t.ast,
-                              $ID.text
+                              $ID.text,
+                              $expression.ast
                               )
                           );
 
