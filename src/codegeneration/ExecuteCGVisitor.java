@@ -113,19 +113,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         codeGenerator.printComment("Parameters");
         f.getType().accept(this, null); // Parameters
         codeGenerator.printComment("Local variables");
-        f.getVariablesList().forEach( v -> { // Local variables
-            v.accept(this, null);
-        });
         int bytesLocals = f.getVariablesList().isEmpty()? 0 : -((VarDefinition) f.getVariablesList().getLast()).getOffset();
         codeGenerator.enter(bytesLocals);
-        f.getVariablesList().forEach( v -> {
-            if(((VarDefinition)v).getValue() != null){
-                codeGenerator.pushBP();
-                codeGenerator.push(((VarDefinition)v).getOffset());
-                codeGenerator.add(IntType.getInstance());
-                ((VarDefinition)v).getValue().accept(valueCGVisitor, null);
-                codeGenerator.store(v.getType());
-            }
+        f.getVariablesList().forEach( v -> { // Local variables
+            v.accept(this, null);
         });
         f.setLocalBytesSum(bytesLocals);
         FunctionType type = ((FunctionType) f.getType());
@@ -185,6 +176,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
     @Override
     public Void visit(VarDefinition v, FuncDefinition param) {
         codeGenerator.printComment(v.getType().toString() + " " + v.getName() + " (offset " + v.getOffset() + ")");
+        if(v.getValue() != null) {
+            codeGenerator.pushBP();
+            codeGenerator.push(v.getOffset());
+            codeGenerator.add(IntType.getInstance());
+            v.getValue().accept(valueCGVisitor, null);
+            codeGenerator.store(v.getType());
+        }
         return null;
     }
 
