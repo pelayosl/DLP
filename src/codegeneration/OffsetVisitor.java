@@ -3,7 +3,6 @@ package codegeneration;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.locatables.Definition;
-import ast.locatables.Statement;
 import ast.semantic.AbstractVisitor;
 import ast.types.FunctionType;
 import ast.types.RecordField;
@@ -57,13 +56,7 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
     @Override
     public Void visit(FuncDefinition fd, Void p) {
         localBytesSum = 0;
-        fd.getType().accept(this, p);
-        for (Definition v : fd.getVariablesList()) {
-            v.accept(this, p);
-        }
-        for (Statement s : fd.getStatementList()) {
-            s.accept(this, p);
-        }
+        super.visit(fd, p);
         return null;
     }
 }

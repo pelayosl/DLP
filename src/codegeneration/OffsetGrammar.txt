@@ -1,0 +1,34 @@
+
+Pelayo Sierra Lobo - UO294217
+
+This file contains the attribute grammar for the type checking and inference of the AST nodes.
+
+G:
+(1) RecordType: type -> recordfield*
+(2) VarDefinition: definition -> ID type
+(3) FunctionType: type -> type definition*
+(4) FuncDefinition: definition -> ID type statement1* statement2*
+
+A:
+definition.offset, recordfield.offset
+
+R:
+// globalBytesSum and localBytesSum are private attributes of the OffsetVisitor class
+(1) int fieldsBytesSum = 0;
+    recordfield*.forEach(rf -> {
+        rf.offset = fieldsBytesSum;
+        fieldsBytesSum += rf.type.numberOfBytes();
+    });
+(2) if(definition.scope == 0) {
+       definition.offset = globalBytesSum;
+       globalBytesSum += definition.type.numberOfBytes();
+    } else {
+       localBytesSum += definition.type.numberOfBytes();
+       definition.offset = -localBytesSum;
+    }
+(3) int paramBytesSum = 4;
+    for(int i = definition*.size() - 1; i >= 0; i--) {
+       definition*.get(i).offset = paramBytesSum;
+       paramBytesSum += definition*.get(i).type.numberOfBytes();
+    }
+(4) localBytesSum = 0;

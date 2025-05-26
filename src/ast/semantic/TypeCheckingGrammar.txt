@@ -1,7 +1,7 @@
 
 Pelayo Sierra Lobo - UO294217
 
-This file contains tbe attribute grammars for the type checking of the AST nodes.
+This file contains the attribute grammar for the type checking and inference of the AST nodes.
 
 G:
 (1)  IntLiteral: expression -> INT_CONSTANT
@@ -19,7 +19,7 @@ G:
 (13) Assignment: statement -> expression1 expression2
 (14) ReadStatement: statement -> expression
 (15) WriteStatement: statement -> expression
-(16) FuncDefinition: statement1 -> ID type statement2* statement3*
+(16) FuncDefinition: definition -> ID type statement1* statement2*
 (17) FieldAccess: expression1 -> expression2 ID
 (18) FunctionInvocation: expression1 -> expression2 expression3*
 (19) ReturnStatement: statement -> expression
