@@ -1,7 +1,7 @@
-function main(): void{ // Uncomment to test
-	let a:int;
-	let b:char;
-    let c:int;
 
-    a = 1;
+function main(): void{ // Uncomment to test
+	let a,b: int = 3;
+
+    b = a + b;
+    log b;
 }

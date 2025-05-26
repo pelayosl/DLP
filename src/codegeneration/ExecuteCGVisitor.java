@@ -7,6 +7,7 @@ import ast.locatables.Definition;
 import ast.locatables.Statement;
 import ast.statements.*;
 import ast.types.FunctionType;
+import ast.types.IntType;
 import ast.types.VoidType;
 import jersey.repackaged.org.objectweb.asm.Type;
 
@@ -117,6 +118,15 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         });
         int bytesLocals = f.getVariablesList().isEmpty()? 0 : -((VarDefinition) f.getVariablesList().getLast()).getOffset();
         codeGenerator.enter(bytesLocals);
+        f.getVariablesList().forEach( v -> {
+            if(((VarDefinition)v).getValue() != null){
+                codeGenerator.pushBP();
+                codeGenerator.push(((VarDefinition)v).getOffset());
+                codeGenerator.add(IntType.getInstance());
+                ((VarDefinition)v).getValue().accept(valueCGVisitor, null);
+                codeGenerator.store(v.getType());
+            }
+        });
         f.setLocalBytesSum(bytesLocals);
         FunctionType type = ((FunctionType) f.getType());
         int bytesParams = type.getVarDefinitionList()

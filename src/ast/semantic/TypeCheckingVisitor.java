@@ -132,8 +132,10 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     @Override
     public Void visit(VarDefinition vd, Type param) {
         super.visit(vd, param);
-        if(vd.getValue() != null && vd.getValue().getType() != vd.getType())
+        if(vd.getValue() != null && vd.getValue().getType() != vd.getType()){
+            System.out.println(vd.getValue().getType() + " != " + vd.getType());
             new ErrorType("Invalid expression assigned to type " + vd.getType(), vd);
+        }
         return null;
     }
 

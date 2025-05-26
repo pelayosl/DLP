@@ -16,10 +16,10 @@ import parser.*;
 public class Main {
 
     public static void main(String... args) throws Exception {
-//        if (args.length < 2) {
-//            System.err.println("Please, specify the input and output files.");
-//            return;
-//        }
+        if (args.length < 2) {
+            System.err.println("Please, specify the input and output files.");
+            return;
+        }
 
         // create a lexer that feeds off of input CharStream
         CharStream input = CharStreams.fromFileName(args[0]);
@@ -40,7 +40,7 @@ public class Main {
         } else {
             // * The AST is shown
             ast.accept(new OffsetVisitor(), null);
-//             ast.accept(new ExecuteCGVisitor(new CodeGenerator(args[1], args[0])), null);
+             ast.accept(new ExecuteCGVisitor(new CodeGenerator(args[1], args[0])), null);
             IntrospectorModel model = new IntrospectorModel("Program", ast);
             new IntrospectorView("Introspector", model);
         }

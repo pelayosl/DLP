@@ -207,6 +207,9 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     @Override
     public RT visit(VarDefinition varDefinition, PT param) {
         varDefinition.getType().accept(this, param);
+        if(varDefinition.getValue() != null) {
+            varDefinition.getValue().accept(this, param);
+        }
         return null;
     }
 }
