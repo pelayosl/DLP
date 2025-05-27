@@ -3,6 +3,8 @@ package ast.types;
 import ast.Locatable;
 import ast.Type;
 import ast.Visitor;
+import ast.expressions.ArrayAssignment;
+import ast.locatables.Expression;
 
 public class ArrayType extends AbstractType {
 
@@ -55,6 +57,17 @@ public class ArrayType extends AbstractType {
             return super.squareBrackets(t, l);
         }
         return this.type;
+    }
+
+    @Override
+    public void mustBeAssignable(Expression expression, Locatable l){
+        if(expression instanceof ArrayAssignment as) {
+            as.getExpressionList().stream().map(Expression::getType).toList().forEach(t -> {
+                t.mustPromoteTo(type, l);
+            });
+            if(as.getExpressionList().size() != size)
+                super.mustBeAssignable(expression, l);
+        }
     }
 
     @Override

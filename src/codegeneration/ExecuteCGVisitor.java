@@ -3,10 +3,13 @@ package codegeneration;
 import ast.Program;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
+import ast.expressions.ArrayAssignment;
 import ast.locatables.Definition;
 import ast.locatables.Statement;
 import ast.statements.*;
+import ast.types.ArrayType;
 import ast.types.FunctionType;
+import ast.types.IntType;
 import ast.types.VoidType;
 import jersey.repackaged.org.objectweb.asm.Type;
 
@@ -112,11 +115,11 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         codeGenerator.printComment("Parameters");
         f.getType().accept(this, null); // Parameters
         codeGenerator.printComment("Local variables");
+        int bytesLocals = f.getVariablesList().isEmpty()? 0 : -((VarDefinition) f.getVariablesList().getLast()).getOffset();
+        codeGenerator.enter(bytesLocals);
         f.getVariablesList().forEach( v -> { // Local variables
             v.accept(this, null);
         });
-        int bytesLocals = f.getVariablesList().isEmpty()? 0 : -((VarDefinition) f.getVariablesList().getLast()).getOffset();
-        codeGenerator.enter(bytesLocals);
         f.setLocalBytesSum(bytesLocals);
         FunctionType type = ((FunctionType) f.getType());
         int bytesParams = type.getVarDefinitionList()
@@ -168,6 +171,26 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         return null;
     }
 
+    /* Esto es como lo había hecho antes, con una definición nueva. Me daba problemas
+     * en el Typechecking.
+     * execute[[ ArrayAssignmentVariableDefinition: definition -> type ID expression* ]]() =
+     *    if(definition.scope == 0) {
+     *       for(int i = 0; i < expression*.size(); i++){
+     *           <push> definition.offset
+     *           <push> type.numberOfBytes()
+     *           <pushi> i
+     *           <muli>
+     *           <addi>
+     *           value[[ expression*.get(i) ]]
+     *           cg.convertTo(type.type, expression*.get(i).type)
+     *           <storei>
+     *       }
+     *    }
+     *    else {
+     *
+     *    }
+     */
+
     /*
      * execute[[ VarDefinition: vardefinition -> type ID ]]() =
 	 *   ' * type.toString() ID (offset vardefinition.offset )
@@ -175,6 +198,35 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
     @Override
     public Void visit(VarDefinition v, FuncDefinition param) {
         codeGenerator.printComment(v.getType().toString() + " " + v.getName() + " (offset " + v.getOffset() + ")");
+        // Esto es una putísima guarrada, cuidado
+        if(v.getInitialValue() != null && v.getInitialValue() instanceof ArrayAssignment exp) {
+            if(v.getScope() == 0){
+                for(int i = 0; i < exp.getExpressionList().size(); i++){
+                    codeGenerator.push(v.getOffset());
+                    codeGenerator.push(((ArrayType)v.getType()).getType().numberOfBytes());
+                    codeGenerator.push(i);
+                    codeGenerator.mul(IntType.getInstance());
+                    codeGenerator.add(IntType.getInstance());
+                    exp.getExpressionList().get(i).accept(valueCGVisitor, null);
+                    codeGenerator.convertTo(((ArrayType) v.getType()).getType(), exp.getExpressionList().get(i).getType());
+                    codeGenerator.store(exp.getExpressionList().get(i).getType());
+                }
+            }
+            else {
+                for(int i = 0; i < exp.getExpressionList().size(); i++){
+                    codeGenerator.pushBP();
+                    codeGenerator.push(v.getOffset());
+                    codeGenerator.add(IntType.getInstance());
+                    codeGenerator.push(((ArrayType)v.getType()).getType().numberOfBytes());
+                    codeGenerator.push(i);
+                    codeGenerator.mul(IntType.getInstance());
+                    codeGenerator.add(IntType.getInstance());
+                    exp.getExpressionList().get(i).accept(valueCGVisitor, null);
+                    codeGenerator.convertTo(((ArrayType) v.getType()).getType(), exp.getExpressionList().get(i).getType());
+                    codeGenerator.store(exp.getExpressionList().get(i).getType());
+                }
+            }
+        }
         return null;
     }
 

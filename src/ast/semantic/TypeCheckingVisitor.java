@@ -2,10 +2,13 @@ package ast.semantic;
 
 import ast.Type;
 import ast.definitions.FuncDefinition;
+import ast.definitions.VarDefinition;
 import ast.expressions.*;
 import ast.locatables.Expression;
 import ast.statements.*;
 import ast.types.*;
+
+import java.lang.reflect.Array;
 
 
 public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
@@ -155,6 +158,15 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     public Void visit(Cast c, Type param) {
         super.visit(c, param);
         c.setType(c.getExpression().getType().canBeCastTo(c.getType(), c));
+        return null;
+    }
+
+    @Override
+    public Void visit(VarDefinition vd, Type param) {
+        super.visit(vd, param);
+        if(vd.getInitialValue() != null) {
+            vd.getType().mustBeAssignable(vd.getInitialValue(), vd);
+        }
         return null;
     }
 

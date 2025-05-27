@@ -1,5 +1,7 @@
 package ast;
 
+import ast.locatables.Expression;
+
 import java.util.List;
 
 public interface Type extends ASTNode{
@@ -23,4 +25,6 @@ public interface Type extends ASTNode{
     public char suffix();
 
     public Type superType(Type type, Locatable l);
+
+    public void mustBeAssignable(Expression e, Locatable l);
 }

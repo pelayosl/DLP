@@ -21,6 +21,7 @@ public interface Visitor<RT, PT> {
     RT visit(UnaryNot f, PT param);
     RT visit(Logic f, PT param);
     RT visit(NumberLiteral f, PT param);
+    RT visit(ArrayAssignment f, PT param);
 
     // Program
     RT visit(Program p, PT param);

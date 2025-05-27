@@ -3,6 +3,7 @@ package ast.types;
 import ast.Locatable;
 import ast.Type;
 import ast.Visitor;
+import ast.locatables.Expression;
 
 import java.util.List;
 
@@ -71,6 +72,11 @@ public abstract class AbstractType implements Type {
     @Override
     public Type superType(Type t, Locatable l) {
         return new ErrorType("No super type found between " + this + " and " + t, l);
+    }
+
+    @Override
+    public void mustBeAssignable(Expression e, Locatable l){
+        new ErrorType("Invalid number of arguments for array", l);
     }
 
     @Override

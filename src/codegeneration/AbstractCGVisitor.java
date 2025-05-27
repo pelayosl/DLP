@@ -163,4 +163,9 @@ public class AbstractCGVisitor<TR, TP> implements Visitor<TR, TP> {
     public TR visit(VarDefinition varDefinition, TP param) {
         throw new IllegalStateException("Illegal access to Variable");
     }
+
+    @Override
+    public TR visit(ArrayAssignment avd, TP param) {
+        throw new IllegalStateException("Illegal access to ArrayAssignmentVariableDefinition");
+    }
 }

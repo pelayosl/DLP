@@ -83,6 +83,12 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     }
 
     @Override
+    public RT visit(ArrayAssignment f, PT param) {
+        f.getExpressionList().forEach( v -> v.accept(this, param));
+        return null;
+    }
+
+    @Override
     public RT visit(Program p, PT param) {
         for(var definition : p.getDefinitions()){
             definition.accept(this, param);
@@ -207,7 +213,10 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
 
     @Override
     public RT visit(VarDefinition varDefinition, PT param) {
+        if(varDefinition.getInitialValue() != null)
+            varDefinition.getInitialValue().accept(this, param);
         varDefinition.getType().accept(this, param);
         return null;
     }
+
 }

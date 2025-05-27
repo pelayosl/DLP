@@ -27,7 +27,34 @@ definition returns [List<Definition> ast = new ArrayList<>()]:
 
 
 variable_definition returns [List<Definition> ast = new ArrayList<>()]:
-       'let' ID variableList ':' t=type ';' {
+         'let' ID variableList ':' '[' INT_LITERAL ']' bt=built_in_type '=' '{' expressionList '}' ';'
+          {
+                   $ast.add(new VarDefinition(
+                        $ID.getLine(),
+                        $ID.getCharPositionInLine()+1,
+                        new ArrayType(
+                             $bt.ast,
+                             LexerHelper.lexemeToInt($INT_LITERAL.text)
+                        ),
+                        $ID.text,
+                        new ArrayAssignment($ID.getLine(), $ID.getCharPositionInLine()+1, $expressionList.ast)
+                   ));
+                   for(Token id : $variableList.ast) {
+                                          $ast.add(
+                                              new VarDefinition(
+                                                  id.getLine(),
+                                                  id.getCharPositionInLine()+1,
+                                                  new ArrayType(
+                                                      $bt.ast,
+                                                      LexerHelper.lexemeToInt($INT_LITERAL.text)
+                                                  ),
+                                                  id.getText(),
+                                                  new ArrayAssignment($ID.getLine(), $ID.getCharPositionInLine()+1, $expressionList.ast)
+                                              )
+                                          );
+                                      }
+          }
+       | 'let' ID variableList ':' t=type ';' {
                    $ast.add(new VarDefinition(
                        $ID.getLine(),
                        $ID.getCharPositionInLine()+1,
