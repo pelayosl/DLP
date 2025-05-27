@@ -50,11 +50,6 @@ public class CharType extends AbstractType {
     }
 
     @Override
-    public Type logic(Locatable l) {
-        return this;
-    }
-
-    @Override
     public Type logic(Type t, Locatable l) {
         if (t instanceof CharType) {
             return t;

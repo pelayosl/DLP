@@ -13,6 +13,11 @@ public class VoidType extends AbstractType {
     }
 
     @Override
+    public String toString(){
+        return "VoidType";
+    }
+
+    @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return v.visit(this, param);
     }

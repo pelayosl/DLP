@@ -91,76 +91,76 @@ public class AbstractCGVisitor<TR, TP> implements Visitor<TR, TP> {
 
     @Override
     public TR visit(ReadStatement p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to ReadStatement");
     }
 
     @Override
     public TR visit(ReturnStatement p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to ReturnStatement");
     }
 
     @Override
     public TR visit(WhileStatement p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to WhileStatement");
     }
 
     @Override
     public TR visit(WriteStatement p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to WriteStatement");
     }
 
     @Override
     public TR visit(ArrayType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to ArrayType");
     }
 
     @Override
     public TR visit(CharType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to CharType");
     }
 
     @Override
     public TR visit(ErrorType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to ErrorType");
     }
 
     @Override
     public TR visit(FunctionType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to FunctionType");
     }
 
     @Override
     public TR visit(IntType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to IntType");
     }
 
     @Override
     public TR visit(NumberType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to NumberType");
     }
 
     @Override
     public TR visit(RecordType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to RecordType");
     }
 
     @Override
     public TR visit(VoidType p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to VoidType");
     }
 
     @Override
     public TR visit(RecordField p, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to RecordField");
     }
 
     @Override
     public TR visit(FuncDefinition funcDefinition, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to FuncDefinition");
     }
 
     @Override
     public TR visit(VarDefinition varDefinition, TP param) {
-        throw new IllegalStateException("Illegal access to Variable");
+        throw new IllegalStateException("Illegal access to VarDefinition");
     }
 }

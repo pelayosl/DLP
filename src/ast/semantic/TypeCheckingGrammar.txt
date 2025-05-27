@@ -4,9 +4,9 @@ Pelayo Sierra Lobo - UO294217
 This file contains the attribute grammar for the type checking and inference of the AST nodes.
 
 G:
-(1)  IntLiteral: expression -> INT_CONSTANT
-(2)  CharLiteral: expression -> CHAR_CONSTANT
-(3)  NumberLiteral: expression -> REAL_CONSTANT
+(1)  IntLiteral: expression -> INT_LITERAL
+(2)  CharLiteral: expression -> CHAR_LITERAL
+(3)  NumberLiteral: expression -> REAL_LITERAL
 (4)  Variable: expression -> ID
 (5)  Logic: expression1 -> expression2 expression3
 (6)  ConditionalStatement: statement1 -> expression statement2* statement3*

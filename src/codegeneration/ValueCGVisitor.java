@@ -30,7 +30,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
     }
 
     /*
-    * value[[ IntLiteral: expression -> INT_CONSTANT ]]() =
+    * value[[ IntLiteral: expression -> INT_LITERAL ]]() =
     *   <pushi> expression.value
     */
     @Override
@@ -40,7 +40,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
     }
 
     /*
-    * value[[ CharLiteral: expression -> CHAR_CONSTANT ]]() =
+    * value[[ CharLiteral: expression -> CHAR_LITERAL ]]() =
     *   <pushb> expression.value
     */
     @Override
@@ -50,7 +50,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
     }
 
     /*
-    * value[[ NumberLiteral: expression -> NUMBER_CONSTANT ]]() =
+    * value[[ NumberLiteral: expression -> NUMBER_LITERAL ]]() =
     *  <pushf> expression.value
     */
     @Override
@@ -88,7 +88,6 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
     @Override
     public Void visit(Comparison c, Void param) {
         Type superType = c.getLeft().getType().superType(c.getRight().getType(), c);
-        System.out.println();
         c.getLeft().accept(this, param);
         codeGenerator.convertTo(c.getLeft().getType(), superType);
         c.getRight().accept(this, param);

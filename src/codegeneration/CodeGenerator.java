@@ -159,8 +159,9 @@ public class CodeGenerator extends AbstractCGVisitor<Void, Void> {
                 out.println("\tf2i");
                 out.println("\ti2b");
             }
-            else
+            else{
                 out.println("\t" + type2.suffix() + "2" + type1.suffix());
+            }
         }
         out.flush();
     }
