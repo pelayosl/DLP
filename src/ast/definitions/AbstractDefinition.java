@@ -7,7 +7,7 @@ import ast.locatables.Definition;
 public abstract class AbstractDefinition extends AbstractLocatable implements Definition {
     private int scope;
     private final String name;
-    private final Type type;
+    private Type type;
 
     public AbstractDefinition(int line, int column, String name, Type type) {
         super(line, column);
@@ -33,5 +33,9 @@ public abstract class AbstractDefinition extends AbstractLocatable implements De
     @Override
     public void setScope(int scope) {
         this.scope = scope;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }

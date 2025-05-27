@@ -146,6 +146,13 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     }
 
     @Override
+    public RT visit(LetStatement p, PT param) {
+        p.getValue().accept(this, param);
+        p.getVar().accept(this, param);
+        return null;
+    }
+
+    @Override
     public RT visit(ArrayType p, PT param) {
         p.getType().accept(this, param);
         return null;

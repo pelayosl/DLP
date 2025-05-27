@@ -110,6 +110,11 @@ public class AbstractCGVisitor<TR, TP> implements Visitor<TR, TP> {
     }
 
     @Override
+    public TR visit(LetStatement p, TP param) {
+        throw new IllegalStateException("Illegal access to LetStatement");
+    }
+
+    @Override
     public TR visit(ArrayType p, TP param) {
         throw new IllegalStateException("Illegal access to ArrayType");
     }

@@ -112,11 +112,11 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         codeGenerator.printComment("Parameters");
         f.getType().accept(this, null); // Parameters
         codeGenerator.printComment("Local variables");
+        int bytesLocals = f.getVariablesList().isEmpty()? 0 : -((VarDefinition) f.getVariablesList().getLast()).getOffset();
+        codeGenerator.enter(bytesLocals);
         f.getVariablesList().forEach( v -> { // Local variables
             v.accept(this, null);
         });
-        int bytesLocals = f.getVariablesList().isEmpty()? 0 : -((VarDefinition) f.getVariablesList().getLast()).getOffset();
-        codeGenerator.enter(bytesLocals);
         f.setLocalBytesSum(bytesLocals);
         FunctionType type = ((FunctionType) f.getType());
         int bytesParams = type.getVarDefinitionList()
@@ -280,6 +280,20 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         if(((FunctionType)f.getVariable().getType()).getReturnType() != VoidType.getInstance()){
             codeGenerator.pop(((FunctionType) f.getVariable().getType()).getReturnType().suffix());
         }
+        return null;
+    }
+
+    /*
+     * execute[[ LetStatement: statement -> ID expression1 expression2 ]]() =
+     *     address[[ expression1 ]]
+     *     value[[ expression2 ]]
+     *     <store> expression1.type.suffix()
+     */
+    @Override
+    public Void visit(LetStatement ls, FuncDefinition param) {
+        ls.getVar().accept(addressCGVisitor, null);
+        ls.getValue().accept(valueCGVisitor, null);
+        codeGenerator.store(ls.getVar().getType());
         return null;
     }
 }

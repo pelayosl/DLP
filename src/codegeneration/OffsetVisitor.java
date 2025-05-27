@@ -4,6 +4,7 @@ import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.locatables.Definition;
 import ast.semantic.AbstractVisitor;
+import ast.statements.LetStatement;
 import ast.types.FunctionType;
 import ast.types.RecordField;
 import ast.types.RecordType;
@@ -36,6 +37,19 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
         } else {
             localBytesSum += vd.getType().numberOfBytes();
             vd.setOffset(-localBytesSum);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(LetStatement ls, Void param){
+        super.visit(ls, param);
+        if(ls.getScope() == 0) {
+            ls.setOffset(globalBytesSum);
+            globalBytesSum += ls.getType().numberOfBytes();
+        } else {
+            localBytesSum += ls.getType().numberOfBytes();
+            ls.setOffset(-localBytesSum);
         }
         return null;
     }

@@ -33,6 +33,7 @@ public interface Visitor<RT, PT> {
     RT visit(ReturnStatement p, PT param);
     RT visit(WhileStatement p, PT param);
     RT visit(WriteStatement p, PT param);
+    RT visit(LetStatement p, PT param);
 
     // Types
     RT visit(ArrayType p, PT param);

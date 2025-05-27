@@ -4,6 +4,7 @@ import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.expressions.Variable;
 import ast.locatables.Definition;
+import ast.statements.LetStatement;
 import ast.types.ErrorType;
 import symboltable.SymbolTable;
 
@@ -42,6 +43,15 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
                 new ErrorType("Definition for name '" + v.getName() + "' not found", v),
                 v.getName()
         )));
+        return null;
+    }
+
+    @Override
+    public Void visit(LetStatement ls, Void param) {
+        if(!symbolTable.insert(ls)){
+            new ErrorType("Variable '" + ls.getName() + "' already defined", ls);
+        }
+        ls.getVar().accept(this, param);
         return null;
     }
 }

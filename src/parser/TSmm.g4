@@ -27,7 +27,19 @@ definition returns [List<Definition> ast = new ArrayList<>()]:
 
 
 variable_definition returns [List<Definition> ast = new ArrayList<>()]:
-       'let' ID variableList ':' t=type ';' {
+        'let' ID variableList '=' expression ';'
+        {
+            $ast.add(new LetStatement(
+                $ID.getLine(),
+                $ID.getCharPositionInLine()+1,
+                null,
+                $ID.text,
+                new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
+                $expression.ast
+                )
+            );
+        }
+       | 'let' ID variableList ':' t=type ';' {
                    $ast.add(new VarDefinition(
                        $ID.getLine(),
                        $ID.getCharPositionInLine()+1,
@@ -193,7 +205,7 @@ statement returns [List<Statement> ast = new ArrayList<>()]:
                              )
                              );
               }
-       | 'if' '(' expression ')' b1=block ('else' b2=block)? {
+       | 'if' '(' expression ')' b1=block 'else' b2=block {
 
                       $ast.add(new ConditionalStatement(
                             $expression.ast.getLine(),
