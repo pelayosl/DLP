@@ -55,13 +55,22 @@ public class CharType extends AbstractType {
     }
 
     @Override
+    public Type logic(Type t, Locatable l) {
+        if (t instanceof CharType) {
+            return t;
+        }
+        return super.logic(t, l);
+    }
+
+
+    @Override
     public void mustBeBuiltIn(Locatable l) {
         // Empty because it is built in
     }
 
     @Override
     public void mustPromoteTo(Type otherType, Locatable l) {
-        if(!(otherType instanceof IntType || otherType instanceof CharType || otherType instanceof NumberType))
+        if(!(otherType instanceof CharType))
             super.mustPromoteTo(otherType, l);
     }
 
@@ -73,6 +82,11 @@ public class CharType extends AbstractType {
             return otherType;
         }
         return super.canBeCastTo(otherType, l);
+    }
+
+    @Override
+    public Type superType(Type otherType, Locatable l) {
+        return IntType.getInstance();
     }
 
     @Override

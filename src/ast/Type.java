@@ -21,4 +21,6 @@ public interface Type extends ASTNode{
 
     // CGVisitor
     public char suffix();
+
+    public Type superType(Type type, Locatable l);
 }

@@ -182,6 +182,7 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     public RT visit(RecordType p, PT param) {
         for(var field : p.getRecordFieldList()){
             field.accept(this, param);
+            field.getType().accept(this, param);
         }
         return null;
     }

@@ -40,7 +40,7 @@ public abstract class AbstractType implements Type {
 
     @Override
     public void mustPromoteTo(Type t, Locatable l) {
-        new ErrorType("Type " + this.getClass() + " not promotable to type " + t.getClass(), l);
+        new ErrorType("Type " + this + " not promotable to type " + t, l);
     }
 
     @Override
@@ -66,6 +66,11 @@ public abstract class AbstractType implements Type {
     @Override
     public Type parenthesis(List<Type> types, Locatable l) {
         return new ErrorType("Cannot invoke a non-function type", l);
+    }
+
+    @Override
+    public Type superType(Type t, Locatable l) {
+        return new ErrorType("No super type found between " + this + " and " + t, l);
     }
 
     @Override

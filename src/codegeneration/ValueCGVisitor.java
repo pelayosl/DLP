@@ -1,7 +1,9 @@
 package codegeneration;
 
+import ast.Type;
 import ast.expressions.*;
 import ast.statements.FunctionInvocation;
+import ast.types.IntType;
 
 public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
     public final CodeGenerator codeGenerator;
@@ -85,11 +87,13 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
     */
     @Override
     public Void visit(Comparison c, Void param) {
+        Type superType = c.getLeft().getType().superType(c.getRight().getType(), c);
+        System.out.println();
         c.getLeft().accept(this, param);
-        codeGenerator.convertTo(c.getLeft().getType(), c.getType());
+        codeGenerator.convertTo(c.getLeft().getType(), superType);
         c.getRight().accept(this, param);
-        codeGenerator.convertTo(c.getRight().getType(), c.getType());
-        codeGenerator.comparison(c.getOperator(), c.getType());
+        codeGenerator.convertTo(c.getRight().getType(), superType);
+        codeGenerator.comparison(c.getOperator(), superType);
         return null;
     }
 
@@ -129,6 +133,25 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
         codeGenerator.not();
         return null;
     }
+
+    /*
+     * value[[ UnaryMinus: expression1 -> expression2 ]]() =
+     *   value[[ expression2 ]]
+     *   cg.convertTo(expression2.type, expression1.type)
+     *   <pushi> -1
+     *   cg.convertTo(IntType, expression1.type)
+     *   <mul> expression1.type.suffix()
+     */
+    @Override
+    public Void visit(UnaryMinus um, Void param) {
+        um.getExpression().accept(this, param);
+        codeGenerator.convertTo(um.getExpression().getType(), um.getType());
+        codeGenerator.push(-1);
+        codeGenerator.convertTo(IntType.getInstance(), um.getType());
+        codeGenerator.mul(um.getType());
+        return null;
+    }
+
 
     /*
      * value[[ ArrayAccess: expression1 -> expression2 expression3 ]]() =

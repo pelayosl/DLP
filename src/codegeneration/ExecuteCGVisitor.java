@@ -253,13 +253,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, FuncDefinition> {
         codeGenerator.jz(label1);
         codeGenerator.printComment("if body");
         for(Statement stmt : cs.getIfStatements()){
-            stmt.accept(this, null);
+            stmt.accept(this, param);
         }
         codeGenerator.jmp(label1+1);
         codeGenerator.label(label1);
         codeGenerator.printComment("else body");
         for(Statement stmt : cs.getElseStatements()){
-            stmt.accept(this, null);
+            stmt.accept(this, param);
         }
         codeGenerator.label(label1+1);
         return null;

@@ -2,6 +2,7 @@ package codegeneration;
 
 import ast.Type;
 import ast.types.CharType;
+import ast.types.IntType;
 import ast.types.NumberType;
 
 import java.io.File;
