@@ -44,4 +44,10 @@ public class LexerHelper {
 		}
 		throw new IllegalArgumentException("Invalid character literal format: " + str);
 	}
+
+	public static boolean lexemeToBool(String str) {
+		if(str.equals("true")) return true;
+		if(str.equals("false")) return false;
+		throw new IllegalArgumentException("Invalid boolean literal format: " + str);
+	}
 }

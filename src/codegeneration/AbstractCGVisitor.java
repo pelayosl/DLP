@@ -150,6 +150,11 @@ public class AbstractCGVisitor<TR, TP> implements Visitor<TR, TP> {
     }
 
     @Override
+    public TR visit(BooleanType booleanType, TP param) {
+        throw new IllegalStateException("Illegal access to BooleanType");
+    }
+
+    @Override
     public TR visit(RecordField p, TP param) {
         throw new IllegalStateException("Illegal access to Variable");
     }
@@ -162,5 +167,10 @@ public class AbstractCGVisitor<TR, TP> implements Visitor<TR, TP> {
     @Override
     public TR visit(VarDefinition varDefinition, TP param) {
         throw new IllegalStateException("Illegal access to Variable");
+    }
+
+    @Override
+    public TR visit(BooleanLiteral booleanLiteral, TP param) {
+        throw new IllegalStateException("Illegal access to BooleanLiteral");
     }
 }

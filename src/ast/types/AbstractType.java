@@ -73,6 +73,7 @@ public abstract class AbstractType implements Type {
         return new ErrorType("No super type found between " + this + " and " + t, l);
     }
 
+
     @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return null;

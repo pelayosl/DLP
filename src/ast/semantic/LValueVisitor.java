@@ -181,4 +181,7 @@ public class LValueVisitor extends AbstractVisitor<Void, Void> {
     public Void visit(RecordField p, Void param) {
         return super.visit(p, param);
     }
+
+    @Override
+    public Void visit(BooleanLiteral p, Void param) { p.setLvalue(false); return super.visit(p, param);}
 }

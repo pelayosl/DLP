@@ -43,6 +43,7 @@ public interface Visitor<RT, PT> {
     RT visit(NumberType p, PT param);
     RT visit(RecordType p, PT param);
     RT visit(VoidType p, PT param);
+    RT visit(BooleanType booleanType, PT param);
 
     // RecordField
     RT visit(RecordField p, PT param);
@@ -50,4 +51,8 @@ public interface Visitor<RT, PT> {
     RT visit(FuncDefinition funcDefinition, PT param);
 
     RT visit(VarDefinition varDefinition, PT param);
+
+    RT visit(BooleanLiteral booleanLiteral, PT param);
+
+
 }

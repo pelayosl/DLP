@@ -299,6 +299,12 @@ expression returns [Expression ast]:
                            );
                        }
        | function_invocation { $ast = $function_invocation.ast; }
+
+       | BOOLEAN_LITERAL { $ast = new BooleanLiteral(
+                             $BOOLEAN_LITERAL.getLine(),
+                             $BOOLEAN_LITERAL.getCharPositionInLine()+1,
+                             LexerHelper.lexemeToBool($BOOLEAN_LITERAL.text));
+                             }
        | ID {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text);}
        | INT_LITERAL {$ast = new IntLiteral($INT_LITERAL.getLine(),
                       $INT_LITERAL.getCharPositionInLine()+1,
@@ -314,7 +320,7 @@ expression returns [Expression ast]:
                       $NUMBER_LITERAL.getCharPositionInLine()+1,
                       LexerHelper.lexemeToReal($NUMBER_LITERAL.text));
                       }
-       ;
+;
 
 type returns [Type ast] locals [List<RecordField> recordFields = new ArrayList<>()]:
        built_in_type { $ast = $built_in_type.ast; }
@@ -351,6 +357,7 @@ type returns [Type ast] locals [List<RecordField> recordFields = new ArrayList<>
 built_in_type returns [Type ast]: 'number' { $ast = NumberType.getInstance(); }
     | 'int' { $ast = IntType.getInstance(); }
     | 'char' { $ast = CharType.getInstance(); }
+    | 'bool' { $ast = BooleanType.getInstance(); }
     ;
 
 COMMENT: ('//' ~[\r\n]* | '/*' .*? '*/') -> skip;
@@ -380,6 +387,8 @@ NUMBER_LITERAL: MANTISSA
               | MANTISSA 'E-' INT_LITERAL
               | MANTISSA 'e' '+'? INT_LITERAL
               ;
-
+BOOLEAN_LITERAL: 'true'
+               | 'false'
+               ;
 ID: [a-zA-Z_][a-zA-Z_0-9]*
   ;

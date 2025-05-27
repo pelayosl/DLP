@@ -158,4 +158,11 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
         return null;
     }
 
+    @Override
+    public Void visit(BooleanLiteral b, Type param) {
+        super.visit(b, param);
+        b.setType(BooleanType.getInstance());
+        return null;
+    }
+
 }

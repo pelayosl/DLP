@@ -189,4 +189,19 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
         return null;
     }
 
+    /*
+     * value[[ BooleanLiteral: expression -> BOOLEAN_LITERAL ]]() =
+     *     if(expression.value)
+     *          <pushi> 1
+     *     else
+     *          <pushi> 0
+     */
+    @Override
+    public Void visit(BooleanLiteral booleanLiteral, Void param) {
+        if(booleanLiteral.getValue())
+            codeGenerator.push(1);
+        else
+            codeGenerator.push(0);
+        return null;
+    }
 }

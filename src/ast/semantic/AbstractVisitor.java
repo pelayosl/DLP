@@ -193,6 +193,11 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     }
 
     @Override
+    public RT visit(BooleanType booleanType, PT param) {
+        return null;
+    }
+
+    @Override
     public RT visit(RecordField p, PT param) {
         return null;
     }
@@ -208,6 +213,11 @@ public class AbstractVisitor<RT, PT> implements Visitor<RT, PT> {
     @Override
     public RT visit(VarDefinition varDefinition, PT param) {
         varDefinition.getType().accept(this, param);
+        return null;
+    }
+
+    @Override
+    public RT visit(BooleanLiteral booleanLiteral, PT param) {
         return null;
     }
 }
