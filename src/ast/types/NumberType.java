@@ -78,6 +78,10 @@ public class NumberType extends AbstractType {
         return super.logic(t, l);
     }
 
+    @Override
+    public Type assignable(Locatable l) {
+        return this;
+    }
 
     @Override
     public String toString(){

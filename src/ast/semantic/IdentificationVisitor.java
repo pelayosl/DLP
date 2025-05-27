@@ -51,7 +51,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
         if(!symbolTable.insert(ls)){
             new ErrorType("Variable '" + ls.getName() + "' already defined", ls);
         }
-        ls.getVar().accept(this, param);
+        super.visit(ls, param);
         return null;
     }
 }

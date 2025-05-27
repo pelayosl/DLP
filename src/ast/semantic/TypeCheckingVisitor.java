@@ -161,7 +161,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Type> {
     @Override
     public Void visit(LetStatement l, Type param) {
         l.getValue().accept(this, param);
-        l.setType(l.getValue().getType());
+        l.setType(l.getValue().getType().assignable(l));
         l.getVar().accept(this, param);
         return null;
     }

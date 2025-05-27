@@ -23,4 +23,6 @@ public interface Type extends ASTNode{
     public char suffix();
 
     public Type superType(Type type, Locatable l);
+
+    public Type assignable(Locatable l);
 }

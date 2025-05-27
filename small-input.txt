@@ -1,6 +1,5 @@
 function main():void {
-    let a = 3;
+    let b = 5;
+    let a = b;
 
-    a = a + 3;
-    log a;
 }

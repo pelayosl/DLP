@@ -85,6 +85,11 @@ public class CharType extends AbstractType {
     }
 
     @Override
+    public Type assignable(Locatable l) {
+        return this;
+    }
+
+    @Override
     public String toString(){
         return "CharType";
     }

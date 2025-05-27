@@ -74,6 +74,11 @@ public abstract class AbstractType implements Type {
     }
 
     @Override
+    public Type assignable(Locatable l) {
+        return new ErrorType(this + " is not an assignable type", l);
+    }
+
+    @Override
     public <RT, PT> RT accept(Visitor<RT, PT> v, PT param) {
         return null;
     }
