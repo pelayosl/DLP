@@ -61,7 +61,10 @@ public class IntType extends AbstractType {
 
     @Override
     public Type logic(Type t, Locatable l) {
-        return this;
+        if (t instanceof IntType) {
+            return t;
+        }
+        return super.logic(t, l);
     }
 
     @Override
@@ -88,6 +91,13 @@ public class IntType extends AbstractType {
     @Override
     public String toString(){
         return "IntType";
+    }
+
+    @Override
+    public Type superType(Type t, Locatable l) {
+        if(t instanceof NumberType)
+            return t;
+        return this;
     }
 
     @Override
