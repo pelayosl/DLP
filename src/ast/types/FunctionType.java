@@ -65,6 +65,11 @@ public class FunctionType extends AbstractType {
             returnType.mustBeBuiltIn(l);
     }
 
+    @Override
+    public String toString(){
+        return "FunctionType";
+    }
+
     public int getReturnBytesSum() {
         return returnBytesSum;
     }

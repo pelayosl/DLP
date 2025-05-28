@@ -69,7 +69,7 @@ public class IntType extends AbstractType {
 
     @Override
     public void mustPromoteTo(Type otherType, Locatable l) {
-        if(!(otherType instanceof IntType))
+        if(!(otherType instanceof IntType|| otherType instanceof ErrorType))
             super.mustPromoteTo(otherType, l);
     }
 

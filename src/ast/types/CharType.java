@@ -65,7 +65,7 @@ public class CharType extends AbstractType {
 
     @Override
     public void mustPromoteTo(Type otherType, Locatable l) {
-        if(!(otherType instanceof CharType))
+        if(!(otherType instanceof CharType || otherType instanceof ErrorType))
             super.mustPromoteTo(otherType, l);
     }
 

@@ -56,17 +56,12 @@ public class NumberType extends AbstractType {
 
     @Override
     public void mustPromoteTo(Type otherType, Locatable l) {
-        if(!(otherType instanceof NumberType))
+        if(!(otherType instanceof NumberType || otherType instanceof ErrorType))
             super.mustPromoteTo(otherType, l);
     }
 
     @Override
     public Type superType(Type otherType, Locatable l) {
-        return this;
-    }
-
-    @Override
-    public Type logic(Locatable l) {
         return this;
     }
 

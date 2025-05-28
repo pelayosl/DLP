@@ -4,6 +4,7 @@ import ast.types.ErrorType;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ErrorHandler {
@@ -21,6 +22,7 @@ public class ErrorHandler {
     }
 
     public void showErrors(PrintStream stream){
+        errorTypeList.sort(Comparator.comparingInt(err -> err.getLocation().getLine()));
         errorTypeList.forEach(errorType -> stream.println(errorType.toString()));
     }
 

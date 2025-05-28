@@ -41,4 +41,8 @@ public class ErrorType extends AbstractType {
     public void mustPromoteTo(Type t, Locatable l){
         // Empty
     }
+
+    public Locatable getLocation() {
+        return location;
+    }
 }
