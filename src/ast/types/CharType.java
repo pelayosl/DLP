@@ -50,15 +50,6 @@ public class CharType extends AbstractType {
     }
 
     @Override
-    public Type logic(Type t, Locatable l) {
-        if (t instanceof CharType) {
-            return t;
-        }
-        return super.logic(t, l);
-    }
-
-
-    @Override
     public void mustBeBuiltIn(Locatable l) {
         // Empty because it is built in
     }

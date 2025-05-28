@@ -65,14 +65,6 @@ public class NumberType extends AbstractType {
         return this;
     }
 
-    @Override
-    public Type logic(Type t, Locatable l) {
-        if (t instanceof NumberType) {
-            return t;
-        }
-        return super.logic(t, l);
-    }
-
 
     @Override
     public String toString(){
