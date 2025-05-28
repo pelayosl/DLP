@@ -12,13 +12,13 @@ let MATRIXSIZE:int;
 let matrix:[10][10]int;
 
 // Functions
-function setValue(row:int, columnn:int, value:int): void {
-	if (row >= 0 && row < MATRIXSIZE && columnn >= 0 && columnn < MATRIXSIZE) 
+function setValue(row:int, column:int, value:int): void {
+	if (row >= 0 && row < MATRIXSIZE && column >= 0 && column < MATRIXSIZE)
 		matrix[row][column] = value;
 	
 }
-function getValue(row:int, columnn:int): int {
-	if ((row < 0 || row >= MATRIXSIZE) || (columnn < 0 && columnn >= MATRIXSIZE)){
+function getValue(row:int, column:int): int {
+	if ((row < 0 || row >= MATRIXSIZE) || (column < 0 && column >= MATRIXSIZE)){
 		return -1;
 	}
 	else 	
@@ -87,4 +87,4 @@ function main(): void{ // Uncomment to test
 	input integer, character, real;
 	//let error:int; // Uncomment to test
 }
-// function no_function(): {} // Uncomment to test
+//function no_function(): {} // Uncomment to test

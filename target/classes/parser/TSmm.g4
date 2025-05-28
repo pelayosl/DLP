@@ -15,8 +15,9 @@ import java.util.*;
 
 program returns [Program ast] locals [List<Definition> definitions = new ArrayList<>()]:
        (definition {$definitions.addAll($definition.ast);})*
-       main_definition{$definitions.add($main_definition.ast);}
-       EOF { $ast = new Program($definitions);}
+       main_definition{$definitions.add($main_definition.ast);
+       $ast = new Program($definitions);}
+       EOF
        ;
 
 definition returns [List<Definition> ast = new ArrayList<>()]:
