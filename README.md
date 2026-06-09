@@ -69,7 +69,7 @@ orden de precedencia descendente):
 ```
 
 # 📋 Examen
-En las ramas tengo distintos ejercicios de ejemplo que hice para practicar para el examen. El que mejor hecho está es el de `practica-asignacion-dinamica` y quizás `ternary-operator`, lo demás son soluciones algo pochillas.
+En las ramas tengo distintos ejercicios de ejemplo que hice para practicar para el examen. El que mejor hecho está es el de `practica-asignacion-dinamica` y `ternary-operator`.
 El examen de Mayo de 2025 exigía las siguientes mejoras:
 *  Permitir asignaciones entre tipos compatibles siguiendo la jerarquía char -> int -> number, de modo que podemos tener un int `a` y hacer la operación `a = 'c'`, o un number (double) `b` y hacer la operación `b = 2` o `b = 'c'`, pero no operaciones en el sentido contrario de la jerarquía.
 *  Permitir promoción de tipos siguiendo la jerarquía anterior en las llamadas a funciones. Por ejemplo, una función `f` con un parámetro de tipo int puede ser llamada con `f('c')`.
